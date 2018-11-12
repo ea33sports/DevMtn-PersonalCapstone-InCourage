@@ -22,6 +22,9 @@ class SearchReminderGramViewController: UIViewController, UISearchResultsUpdatin
     var searching = false
     var filteredData: [String] = []
     
+    
+    
+    // MARK: - UI Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -36,6 +39,7 @@ class SearchReminderGramViewController: UIViewController, UISearchResultsUpdatin
     }
     
     
+    
     // MARK: - Set Up CollectionView
     lazy var resultsCollectionView: UICollectionView = {
         let layout = UICollectionViewLayout.init()
@@ -47,6 +51,7 @@ class SearchReminderGramViewController: UIViewController, UISearchResultsUpdatin
         return view
     }()
     
+    
     fileprivate func setupCollectionView() {
         view.addSubview(resultsCollectionView)
         resultsCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -55,6 +60,7 @@ class SearchReminderGramViewController: UIViewController, UISearchResultsUpdatin
         resultsCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         resultsCollectionView.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
     }
+    
     
     
     // MARK: - Functions
@@ -93,19 +99,22 @@ class SearchReminderGramViewController: UIViewController, UISearchResultsUpdatin
     */
 }
 
+
+
 extension SearchReminderGramViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     
     // MARK: UICollectionViewDataSource
-    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
         return 1
     }
     
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of items
         return searching ? filteredData.count : data.count
     }
+    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as? SearchReminderGramsCollectionViewCell
@@ -116,6 +125,8 @@ extension SearchReminderGramViewController: UICollectionViewDelegate, UICollecti
         
         return cell ?? UICollectionViewCell()
     }
+    
+    
     
     // MARK: UICollectionViewDelegate
     

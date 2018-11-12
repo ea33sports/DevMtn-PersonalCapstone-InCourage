@@ -1,1 +1,1 @@
-# DevMtn-PersonalCapstone-InVision
+# DevMtn-PersonalCapstone-InCourage

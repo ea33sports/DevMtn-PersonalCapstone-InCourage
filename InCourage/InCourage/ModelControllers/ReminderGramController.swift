@@ -6,7 +6,21 @@
 //  Copyright © 2018 Eric Andersen. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 class ReminderGramController {
+    
+    static let shared = ReminderGramController()
+    
+    
+    
+    // MARK: - Source of Truth
+    var reminderGram: ReminderGram?
+    
+    
+    
+    // MARK: - CRUD
+    func appendImage(image: UIImage) {
+        
+    }
 }

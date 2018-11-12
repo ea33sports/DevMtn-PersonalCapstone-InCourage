@@ -17,6 +17,7 @@ class MessageDetailViewController: UIViewController {
     @IBOutlet weak var messageTextView: UITextView!
     
     
+    
     // MARK: - Properties
     var reminderGram: ReminderGram?
     
@@ -26,6 +27,7 @@ class MessageDetailViewController: UIViewController {
         super.viewDidLoad()
         updateView()
     }
+    
     
     
     // MARK: - Functions
@@ -38,20 +40,23 @@ class MessageDetailViewController: UIViewController {
     }
     
     
+    
     // MARK: - Actions
     @IBAction func backButtonTapped(_ sender: UIButton) {
         self.dismiss(animated: true, completion: nil)
     }
     
+    
     @IBAction func loveRatingStepper(_ sender: UIStepper) {
     }
 }
+
+
 
 extension MessageDetailViewController {
     
     /*
      // MARK: - Navigation
-     
      // In a storyboard-based application, you will often want to do a little preparation before navigation
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
      // Get the new view controller using segue.destination.

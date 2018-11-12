@@ -10,6 +10,7 @@ import UIKit
 
 class ReminderGram {
     
+    // MARK: - Properties
     var sender: User
     var receiver: User
     var image: UIImage
@@ -18,6 +19,11 @@ class ReminderGram {
     var loveRating: Int
     var color: UIColor
     
+    
+    // MARK: - Firebase Keys
+    
+    
+    // MARK: - Initialization
     init(sender: User, receiver: User, image: UIImage, subject: String, message: String, loveRating: Int, color: UIColor) {
         self.sender = sender
         self.receiver = receiver
@@ -27,4 +33,19 @@ class ReminderGram {
         self.loveRating = loveRating
         self.color = color
     }
+    
+    
+    // MARK: - Firebase
 }
+
+// MARK: - Firebase Initialization
+extension ReminderGram {
+    
+}
+
+// MARK: - Equatable Protocol
+//extension ReminderGram: Equatable {
+//    static func == (lhs: ReminderGram, rhs: ReminderGram) -> Bool {
+//        <#code#>
+//    }
+//}

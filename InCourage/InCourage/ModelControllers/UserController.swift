@@ -9,4 +9,7 @@
 import Foundation
 
 class UserController {
+    static let shared = UserController()
+    
+    var isUserLoggedIn: Bool = false
 }

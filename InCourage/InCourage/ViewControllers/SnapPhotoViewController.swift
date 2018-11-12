@@ -29,6 +29,7 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     
+    
     // MARK: - Properties
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return .lightContent
@@ -41,6 +42,7 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
     var stillImageOutput: AVCapturePhotoOutput!
     var videoPreviewLayer: AVCaptureVideoPreviewLayer!
     var photoData: Data?
+    
     
     
     // MARK: - UI Lifecycle
@@ -64,6 +66,7 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
         super.viewDidDisappear(animated)
         
         captureSession.stopRunning()
+        resetView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -74,8 +77,8 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
     }
     
     
+    
     // MARK: - Functions
-
     fileprivate func setupCamera() {
         if cameraCheck == CameraType.Front {
             
@@ -127,7 +130,9 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
         }
     }
 
+    
     func setupLivePreview() {
+        previewView.isHidden = false
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         videoPreviewLayer.videoGravity = .resizeAspect
         videoPreviewLayer.connection?.videoOrientation = AVCaptureVideoOrientation.portrait
@@ -142,6 +147,7 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
         }
     }
     
+    
     func configureSearchIcon() {
         
         if searchIcon.tag == 0 {
@@ -151,21 +157,26 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
         } else if searchIcon.tag == 1 {
             searchIcon.backgroundColor = .blue
             searchIcon.setImage(#imageLiteral(resourceName: "cancelButton"), for: .normal)
-            
         }
     }
+    
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let error = error {
             debugPrint(error)
         } else {
             photoData = photo.fileDataRepresentation()
-            let image = UIImage(data: photoData!)
+            guard let image = UIImage(data: photoData!) else { return }
             capturedImageImageView.image = image
+            
             spinner.stopAnimating()
             spinner.isHidden = true
+            
+            snapPhotoButton.tag = 1
+            configureSnapSendButton()
         }
     }
+    
     
     func getImage(fromSourceType sourceType: UIImagePickerController.SourceType) {
         
@@ -181,6 +192,7 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
         }
     }
     
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 
         dismiss(animated: true) {
@@ -188,59 +200,107 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
             self.captureSession.stopRunning()
         }
         
-        let chosenImage = info[.originalImage] as? UIImage //2
+        guard let chosenImage = info[.originalImage] as? UIImage else { return }//2
         capturedImageImageView.contentMode = .scaleAspectFit //3
         capturedImageImageView.image = chosenImage //4
         
         searchIcon.tag = 1
         configureSearchIcon()
+        
+        snapPhotoButton.tag = 1
+        configureSnapSendButton()
     }
+    
     
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true, completion: nil)
     }
     
+    
     func hidesSearchBar() {
         searchBarContainer.isHidden = true
+        
         profileIcon.isHidden = false
+        
         searchIcon.tag = 0
         searchIcon.isHidden = false
         configureSearchIcon()
+        
+        photoLibraryIcon.isHidden = false
+        snapPhotoButton.isHidden = false
+        flipCameraButton.isHidden = false
+        
         previewView.isHidden = false
         captureSession.startRunning()
     }
     
+    
+    func configureSnapSendButton() {
+        if snapPhotoButton.tag == 0 {
+            snapPhotoButton.backgroundColor = .yellow
+            snapPhotoButton.setImage(#imageLiteral(resourceName: "snapPhoto"), for: .normal)
+            
+        } else if snapPhotoButton.tag == 1 {
+            snapPhotoButton.backgroundColor = .blue
+            snapPhotoButton.setImage(#imageLiteral(resourceName: "addBucketListItem"), for: .normal)
+            shouldPerformSegue(withIdentifier: "sendReminderGram", sender: self)
+        }
+    }
+    
+    func resetView() {
+        capturedImageImageView.image = nil
+        searchIcon.tag = 0
+        configureSearchIcon()
+        snapPhotoButton.tag = 0
+        configureSnapSendButton()
+    }
+    
+    
     @objc func appMovedToBackground() {
         captureSession.stopRunning()
     }
+    
     
     @objc func appMovedToForeground() {
         captureSession.startRunning()
     }
 
     
+    
     // MARK: - Actions
     @IBAction func searchCancelButtonTapped(_ sender: UIButton) {
         
         if searchIcon.tag == 0 {
+            
             searchIcon.tag = 1
             searchBarContainer.isHidden = false
+            
             profileIcon.isHidden = true
             searchIcon.isHidden = true
+            photoLibraryIcon.isHidden = true
+            snapPhotoButton.isHidden = true
+            flipCameraButton.isHidden = true
+            
             captureSession.stopRunning()
             previewView.isHidden = true
+            
         } else if searchIcon.tag == 1 {
+            
             searchIcon.tag = 0
             spinner.stopAnimating()
             spinner.isHidden = true
             capturedImageImageView.image = nil
             previewView.isHidden = false
-            snapPhotoButton.setImage(#imageLiteral(resourceName: "snapPhoto"), for: .normal)
+            
+            snapPhotoButton.tag = 0
+            configureSnapSendButton()
+            
             captureSession.startRunning()
         }
         
         configureSearchIcon()
     }
+    
     
     @IBAction func photoLibraryButtonTapped(_ sender: UIButton) {
         getImage(fromSourceType: .photoLibrary)
@@ -248,12 +308,10 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
         spinner.startAnimating()
     }
     
+    
     @IBAction func snapPhotoButtonTapped(_ sender: UIButton) {
         
-        sender.tag += 1
-        if sender.tag > 1 { sender.tag = 0 }
-        switch sender.tag {
-        case 0:
+        if snapPhotoButton.tag == 0 {
             spinner.isHidden = false
             spinner.startAnimating()
             let settings = AVCapturePhotoSettings(format: [AVVideoCodecKey : AVVideoCodecType.jpeg])
@@ -263,17 +321,38 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
             sender.setImage(#imageLiteral(resourceName: "addBucketListItem"), for: .normal)
             searchIcon.tag = 1
             configureSearchIcon()
-        case 1:
-            spinner.stopAnimating()
-            spinner.isHidden = true
-            capturedImageImageView.image = nil
-            previewView.isHidden = false
-            sender.setImage(#imageLiteral(resourceName: "snapPhoto"), for: .normal)
-            captureSession.startRunning()
-        default:
-            sender.tag = 0
+        } else if snapPhotoButton.tag == 1 {
+//            guard let image = capturedImageImageView.image else { return }
+//            ReminderGramController.shared.appendImage(image: image)
+            performSegue(withIdentifier: "sendReminderGram", sender: self)
         }
+        
+        
+        
+        
+        
+        
+        
+//        snapPhotoButton.tag += 1
+//        if snapPhotoButton.tag > 1 { snapPhotoButton.tag = 0 }
+//        switch snapPhotoButton.tag {
+//        case 0:
+//            spinner.isHidden = false
+//            spinner.startAnimating()
+//            let settings = AVCapturePhotoSettings(format: [AVVideoCodecKey : AVVideoCodecType.jpeg])
+//            stillImageOutput.capturePhoto(with: settings, delegate: self)
+//            captureSession.stopRunning()
+//            previewView.isHidden = true
+//            sender.setImage(#imageLiteral(resourceName: "addBucketListItem"), for: .normal)
+//            searchIcon.tag = 1
+//            configureSearchIcon()
+//        case 1:
+//            performSegue(withIdentifier: "sendReminderGram", sender: self)
+//        default:
+//            snapPhotoButton.tag = 0
+//        }
     }
+    
     
     @IBAction func flipCameraButtonTapped(_ sender: UIButton) {
         
@@ -294,6 +373,8 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
         captureSession.startRunning()
     }
 }
+
+
 
 extension SnapPhotoViewController: UISearchBarDelegate {
     
@@ -321,21 +402,31 @@ extension SnapPhotoViewController: UISearchBarDelegate {
         definesPresentationContext = true
     }
     
+    
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        
         searchBarContainer.isHidden = true
         profileIcon.isHidden = false
         searchIcon.isHidden = false
+        photoLibraryIcon.isHidden = false
+        snapPhotoButton.isHidden = false
+        flipCameraButton.isHidden = false
+        
         searchIcon.tag = 0
         configureSearchIcon()
+        
         previewView.isHidden = false
         captureSession.startRunning()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        hidesSearchBar()
-    }
+    
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//
+//        hidesSearchBar()
+//    }
 }
+
+
 
 extension SnapPhotoViewController {
     
@@ -345,5 +436,10 @@ extension SnapPhotoViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        
+        if segue.identifier == "sendReminderGram" {
+            let destinationVC = segue.destination as? ComposeReminderGramViewController
+            destinationVC?.selectedPhoto = capturedImageImageView.image
+        }
     }
 }
