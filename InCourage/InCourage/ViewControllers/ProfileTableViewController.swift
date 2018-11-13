@@ -130,10 +130,8 @@ extension ProfileTableViewController {
         switch reminderGramSegmentedControl.selectedSegmentIndex {
         case 0:
             returnValue = MockReminderGrams.mockReminderGrams.count
-            break
         case 1:
             returnValue = MockReminderGrams.mockReminderGrams.count
-            break
         default:
             break
         }
@@ -143,23 +141,27 @@ extension ProfileTableViewController {
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "myMessagesCell", for: indexPath) as? MyMessagesTableViewCell
+        
+        var cell = UITableViewCell()
+        guard let inboxCell = tableView.dequeueReusableCell(withIdentifier: "inboxCell", for: indexPath) as? MyMessagesTableViewCell,
+            let outboxCell = tableView.dequeueReusableCell(withIdentifier: "outboxCell", for: indexPath) as? MyMessagesTableViewCell else { return UITableViewCell() }
         
         // Configure the cell...]
         let reminderGram = MockReminderGrams.mockReminderGrams[indexPath.row]
         switch reminderGramSegmentedControl.selectedSegmentIndex {
         case 0:
-            cell?.reminderGram = reminderGram
-//          break
+            inboxCell.reminderGram = reminderGram
+            cell = inboxCell
         case 1:
-            cell?.senderNameLabel.text = "Hey"
-            cell?.messageSubjectLabel.text = "You!"
-//          break
+            outboxCell.senderNameLabel.text = "Hey"
+            outboxCell.messageSubjectLabel.text = "You!"
+            cell = outboxCell
         default:
-            cell?.reminderGram = reminderGram
+            inboxCell.reminderGram = reminderGram
+            cell = inboxCell
         }
         
-        return cell ?? UITableViewCell()
+        return cell
     }
 
     
@@ -186,12 +188,12 @@ extension ProfileTableViewController {
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     
-        if segue.identifier == "inboxToMessagesVC" {
+        if segue.identifier == "inboxToDetailVC" {
             let destinationVC = segue.destination as? MessageDetailViewController
             guard let indexPath = tableView.indexPathForSelectedRow else { return }
             let reminderGram = MockReminderGrams.mockReminderGrams[indexPath.row]
             destinationVC?.reminderGram = reminderGram
-        } else if segue.identifier == "sentToMessagesVC" {
+        } else if segue.identifier == "outboxToDetailVC" {
             let destinationVC = segue.destination as? MessageDetailViewController
             guard let indexPath = tableView.indexPathForSelectedRow else { return }
             let reminderGram = MockReminderGrams.mockReminderGrams[indexPath.row]

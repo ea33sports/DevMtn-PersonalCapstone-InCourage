@@ -29,7 +29,7 @@ class MyMessagesTableViewCell: UITableViewCell {
     func updateViews() {
         guard let reminderGram = reminderGram else { return }
         messagePicImageView.image = reminderGram.image
-        senderNameLabel.text = reminderGram.receiver.fullName
+        senderNameLabel.text = reminderGram.sender.fullName
         messageSubjectLabel.text = reminderGram.subject
         messageLoveRatingLabel.text = "❤️\(reminderGram.loveRating)"
     }

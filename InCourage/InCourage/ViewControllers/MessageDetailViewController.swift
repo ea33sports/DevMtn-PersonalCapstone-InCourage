@@ -11,10 +11,13 @@ import UIKit
 class MessageDetailViewController: UIViewController {
 
     // MARK: - Outlets
-    @IBOutlet weak var loveRatingLabel: UILabel!
+    @IBOutlet weak var senderProfilePic: UIImageView!
+    @IBOutlet weak var senderLabel: UILabel!
     @IBOutlet weak var messageImage: UIImageView!
     @IBOutlet weak var subjectLabel: UILabel!
+    @IBOutlet weak var loveRatingLabel: UILabel!
     @IBOutlet weak var messageTextView: UITextView!
+    @IBOutlet weak var loveRatingStepper: UIStepper!
     
     
     
@@ -33,10 +36,14 @@ class MessageDetailViewController: UIViewController {
     // MARK: - Functions
     func updateView() {
         guard let reminderGram = reminderGram else { return }
-        loveRatingLabel.text = "❤️\(reminderGram.loveRating)"
+        senderProfilePic.image = reminderGram.sender.profilePic
+        senderLabel.text = "From: \(reminderGram.sender.fullName)"
         messageImage.image = reminderGram.image
         subjectLabel.text = reminderGram.subject
+        loveRatingLabel.text = "❤️\(reminderGram.loveRating)"
         messageTextView.text = reminderGram.message
+        
+        loveRatingStepper.maximumValue = .infinity
     }
     
     
@@ -46,8 +53,9 @@ class MessageDetailViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    
-    @IBAction func loveRatingStepper(_ sender: UIStepper) {
+    @IBAction func loveRatingStepperStepped(_ sender: UIStepper) {
+        guard let reminderGram = reminderGram else { return }
+        loveRatingLabel.text = "❤️\(reminderGram.loveRating + Int(sender.value))"
     }
 }
 

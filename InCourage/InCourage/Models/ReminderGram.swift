@@ -20,7 +20,9 @@ class ReminderGram {
     var color: UIColor
     
     
+    
     // MARK: - Firebase Keys
+    
     
     
     // MARK: - Initialization
@@ -35,13 +37,18 @@ class ReminderGram {
     }
     
     
+    
     // MARK: - Firebase
 }
+
+
 
 // MARK: - Firebase Initialization
 extension ReminderGram {
     
 }
+
+
 
 // MARK: - Equatable Protocol
 //extension ReminderGram: Equatable {

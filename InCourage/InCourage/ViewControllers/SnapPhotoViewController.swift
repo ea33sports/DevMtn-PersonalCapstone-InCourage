@@ -243,7 +243,7 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
         } else if snapPhotoButton.tag == 1 {
             snapPhotoButton.backgroundColor = .blue
             snapPhotoButton.setImage(#imageLiteral(resourceName: "addBucketListItem"), for: .normal)
-            shouldPerformSegue(withIdentifier: "sendReminderGram", sender: self)
+            shouldPerformSegue(withIdentifier: "sendReminderGram", sender: nil)
         }
     }
     
@@ -324,7 +324,7 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
         } else if snapPhotoButton.tag == 1 {
 //            guard let image = capturedImageImageView.image else { return }
 //            ReminderGramController.shared.appendImage(image: image)
-            performSegue(withIdentifier: "sendReminderGram", sender: self)
+            performSegue(withIdentifier: "sendReminderGram", sender: nil)
         }
         
         

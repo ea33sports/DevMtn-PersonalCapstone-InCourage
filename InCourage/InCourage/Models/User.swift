@@ -15,6 +15,7 @@ class User {
     var firstName: String
     var lastName: String
 //    var email: String
+//    var username: String
 //    var password: String
 //    var isPrivate: Bool
     var profilePic: UIImage?
@@ -29,7 +30,13 @@ class User {
     }
     
     
+    
+    
+    
+    
     // MARK: - Firebase Keys
+    
+    
     
     // MARK: - Initialization
     init(firstName: String, lastName: String, profilePic: UIImage?, lifePerspective: String?, loveRating: Int?, totalReminderGramsSent: Int?, reminderGramsIn: [ReminderGram]?, reminderGramsOut: [ReminderGram]?) {
@@ -43,14 +50,20 @@ class User {
         self.reminderGramsOut = reminderGramsOut
     }
     
+    
+    
     // MARK: - Firebase
     
 }
+
+
 
 // MARK: - Firebase Initializer
 extension User {
     
 }
+
+
 
 // MARK: - Equatable Protocol
 //extension User: Equatable {
