@@ -8,6 +8,8 @@
 
 import UIKit
 import AVFoundation
+import FirebaseAuth
+import FirebaseDatabase
 
 // MARK: - Camera
 enum CameraType {
@@ -49,11 +51,12 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        fetchLoggedInUser()
         setupSearchBar()
         
         let notificationCenter = NotificationCenter.default
-        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
         notificationCenter.addObserver(self, selector: #selector(appMovedToForeground), name: UIApplication.didBecomeActiveNotification,  object: nil)
+        notificationCenter.addObserver(self, selector: #selector(appMovedToBackground), name: UIApplication.didEnterBackgroundNotification, object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -79,6 +82,29 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
     
     
     // MARK: - Functions
+    func fetchLoggedInUser() {
+        
+        if Auth.auth().currentUser?.uid != nil {
+            guard let uid = Auth.auth().currentUser?.uid else { return }
+            Endpoint.database.collection("users").document(uid).getDocument { (snapshot, error) in
+                if let error = error {
+                    print("🎩 Error fetching user \(error) \(error.localizedDescription)")
+                }
+                
+                if let document = snapshot {
+                    guard let userDictionary = document.data() else { return }
+                    UserController.shared.currentUser = User(userDictionary: userDictionary)
+                    UserController.shared.isUserLoggedIn = true
+                    print("✅ Successfully Fetched logged in user! \(Auth.auth().currentUser?.email) 🐩\(UserController.shared.currentUser?.username)")
+                }
+            }
+            
+        } else {
+            print("⚠️User isn't logged in")
+        }
+    }
+    
+    
     fileprivate func setupCamera() {
         if cameraCheck == CameraType.Front {
             

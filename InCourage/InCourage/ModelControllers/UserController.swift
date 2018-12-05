@@ -9,7 +9,23 @@
 import Foundation
 
 class UserController {
-    static let shared = UserController()
     
-    var isUserLoggedIn: Bool = false
+    // MARK: - Initialization
+    static let shared = UserController()
+    private init() {}
+    
+    
+    
+    // MARK: - Source of Truth
+    var currentUser: User? {
+        didSet {
+            NotificationCenter.default.post(name: currentUserWasSetNotification, object: nil)
+        }
+    }
+    
+    
+    
+    // MARK: - Properties
+    let currentUserWasSetNotification = Notification.Name("currentUserSet")
+    var isUserLoggedIn = false
 }

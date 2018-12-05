@@ -11,49 +11,109 @@ import UIKit
 class User {
     
     // MARK: - Properties
-//    let uid: String
+    let uid: String
+    var email: String
+    var username: String
+    var loggedIn: Bool
     var firstName: String
     var lastName: String
-//    var email: String
-//    var username: String
-//    var password: String
-//    var isPrivate: Bool
-    var profilePic: UIImage?
+    var isPrivate: Bool
+    var profilePic: String?
     var lifePerspective: String?
     var loveRating: Int
+    var reminderGramInbox: [ReminderGram]?
+    var reminderGramOutbox: [ReminderGram]?
     var totalReminderGramsSent: Int?
-    var reminderGramsIn: [ReminderGram]?
-    var reminderGramsOut: [ReminderGram]?
     
     var fullName: String {
         return "\(firstName) \(lastName)"
     }
     
-    
-    
-    
+    var FBSearchDictionary: [String] {
+        var characters = ""
+        var returnArray: [String] = []
+        let usernameArray = Array(username.lowercased())
+        let fullNameArray = Array(fullName.lowercased())
+        for n in 0...username.count - 1 {
+//            let userArray = Array(usernameArray)
+            characters.append(usernameArray[n])
+            returnArray.append(characters)
+            
+        }
+        characters = ""
+        for n in 0...fullName.count - 1 {
+//            let fullArray = Array(fullNameArray)
+            characters.append(fullNameArray[n])
+            returnArray.append(characters)
+        }
+        return returnArray
+    }
     
     
     // MARK: - Firebase Keys
+    enum UserKey {
+        
+        // Top Level Item
+        static let users = "users"
+        
+        // Properties
+        static let uid = "uid"
+        static let email = "email"
+        static let username = "username"
+        static let loggedIn = "loggedIn"
+        static let firstName = "firstName"
+        static let lastName = "lastName"
+        static let fullName = "fullName"
+        static let isPrivate = "isPrivate"
+        static let profilePic = "profilePic"
+        static let lifePerspective = "lifePerspective"
+        static let loveRating = "loveRating"
+        static let reminderGramInbox = "reminderGramInbox"
+        static let reminderGramOutbox = "reminderGramOutbox"
+        static let totalReminderGramsSent = "totalReminderGramsSent"
+        static let FBSearchDictionary = "FBSearchDictionary"
+        
+    }
     
-    
-    
-    // MARK: - Initialization
-    init(firstName: String, lastName: String, profilePic: UIImage?, lifePerspective: String?, loveRating: Int?, totalReminderGramsSent: Int?, reminderGramsIn: [ReminderGram]?, reminderGramsOut: [ReminderGram]?) {
-        self.firstName = firstName
-        self.lastName = lastName
-        self.profilePic = profilePic
-        self.lifePerspective = lifePerspective
-        self.loveRating = loveRating ?? 0
-        self.totalReminderGramsSent = totalReminderGramsSent
-        self.reminderGramsIn = reminderGramsIn
-        self.reminderGramsOut = reminderGramsOut
+    var firebaseDictionary: [String : Any] {
+        return [
+            UserKey.uid : uid,
+            UserKey.email : email,
+            UserKey.username : username,
+            UserKey.loggedIn : loggedIn,
+            UserKey.firstName : firstName,
+            UserKey.lastName : lastName,
+            UserKey.fullName : fullName,
+            UserKey.isPrivate : isPrivate,
+            UserKey.profilePic : profilePic as Any,
+            UserKey.lifePerspective : lifePerspective as Any,
+            UserKey.loveRating : loveRating,
+            UserKey.reminderGramInbox : reminderGramInbox as Any,
+            UserKey.reminderGramOutbox : reminderGramOutbox as Any,
+            UserKey.totalReminderGramsSent : totalReminderGramsSent as Any,
+            UserKey.FBSearchDictionary : FBSearchDictionary
+        ]
+        
     }
     
     
     
-    // MARK: - Firebase
-    
+    // MARK: - Initialization
+    init(uid: String, email: String, username: String, loggedIn: Bool, firstName: String, lastName: String, isPrivate: Bool, profilePic: String?, lifePerspective: String?, loveRating: Int?, reminderGramInbox: [ReminderGram]?, reminderGramOutbox: [ReminderGram]?, totalReminderGramsSent: Int?) {
+        self.uid = uid
+        self.email = email
+        self.username = username
+        self.loggedIn = loggedIn
+        self.firstName = firstName
+        self.lastName = lastName
+        self.isPrivate = isPrivate
+        self.profilePic = profilePic ?? ""
+        self.lifePerspective = lifePerspective
+        self.loveRating = loveRating ?? 0
+        self.reminderGramInbox = reminderGramInbox
+        self.reminderGramOutbox = reminderGramOutbox
+        self.totalReminderGramsSent = totalReminderGramsSent
+    }
 }
 
 
@@ -61,13 +121,30 @@ class User {
 // MARK: - Firebase Initializer
 extension User {
     
+    convenience init?(userDictionary: [String : Any]) {
+        guard let uid = userDictionary[UserKey.uid] as? String,
+            let email = userDictionary[UserKey.email] as? String,
+            let username = userDictionary[UserKey.username] as? String,
+            let loggedIn = userDictionary[UserKey.loggedIn] as? Bool,
+            let firstName = userDictionary[UserKey.firstName] as? String,
+            let lastName = userDictionary[UserKey.lastName] as? String,
+            let isPrivate = userDictionary[UserKey.isPrivate] as? Bool,
+            let profilePic = userDictionary[UserKey.profilePic] as? String?,
+            let lifePerspective = userDictionary[UserKey.lifePerspective] as? String?,
+            let loveRating = userDictionary[UserKey.loveRating] as? Int?,
+            let reminderGramInbox = userDictionary[UserKey.reminderGramInbox] as? [ReminderGram]?,
+            let reminderGramOutbox = userDictionary[UserKey.reminderGramOutbox] as? [ReminderGram]?,
+            let totalReminderGramsSent = userDictionary[UserKey.totalReminderGramsSent] as? Int else { return nil }
+        
+        self.init(uid: uid, email: email, username: username, loggedIn: loggedIn, firstName: firstName, lastName: lastName, isPrivate: isPrivate, profilePic: profilePic, lifePerspective: lifePerspective, loveRating: loveRating, reminderGramInbox: reminderGramInbox, reminderGramOutbox: reminderGramOutbox, totalReminderGramsSent: totalReminderGramsSent)
+    }
 }
 
 
 
 // MARK: - Equatable Protocol
-//extension User: Equatable {
-//    static func == (lhs: User, rhs: User) -> Bool {
-//        <#code#>
-//    }
-//}
+extension User: Equatable {
+    static func == (lhs: User, rhs: User) -> Bool {
+        return lhs.uid == rhs.uid
+    }
+}

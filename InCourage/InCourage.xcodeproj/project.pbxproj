@@ -10,6 +10,13 @@
 		057016EB0AD4558FF8DE1384 /* Pods_InCourageUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 752BB2073D0773E37DC2FA53 /* Pods_InCourageUITests.framework */; };
 		3806E27B218A34C8007397B7 /* MessageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3806E27A218A34C8007397B7 /* MessageDetailViewController.swift */; };
 		38132DB2219A17170099B038 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38132DB1219A17170099B038 /* StoreKit.framework */; };
+		38132DB4219B82160099B038 /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38132DB3219B82160099B038 /* CreateAccountViewController.swift */; };
+		38132DB6219B82240099B038 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38132DB5219B82240099B038 /* LoginViewController.swift */; };
+		38132DB8219B82390099B038 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38132DB7219B82390099B038 /* ResetPasswordViewController.swift */; };
+		38132DBB219B8A620099B038 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38132DBA219B8A620099B038 /* AuthManager.swift */; };
+		38132DBD219B8A900099B038 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38132DBC219B8A900099B038 /* DatabaseManager.swift */; };
+		38132DBF219B8A9D0099B038 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38132DBE219B8A9D0099B038 /* Endpoint.swift */; };
+		38132DC1219B8AA80099B038 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38132DC0219B8AA80099B038 /* StoreManager.swift */; };
 		3835519A2188FEDE007A453D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383551992188FEDE007A453D /* AppDelegate.swift */; };
 		3835519F2188FEDE007A453D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3835519D2188FEDE007A453D /* Main.storyboard */; };
 		383551A12188FEE0007A453D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 383551A02188FEE0007A453D /* Assets.xcassets */; };
@@ -59,6 +66,14 @@
 /* Begin PBXFileReference section */
 		3806E27A218A34C8007397B7 /* MessageDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDetailViewController.swift; sourceTree = "<group>"; };
 		38132DB1219A17170099B038 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		38132DB3219B82160099B038 /* CreateAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountViewController.swift; sourceTree = "<group>"; };
+		38132DB5219B82240099B038 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		38132DB7219B82390099B038 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
+		38132DBA219B8A620099B038 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
+		38132DBC219B8A900099B038 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		38132DBE219B8A9D0099B038 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
+		38132DC0219B8AA80099B038 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
+		38132DC2219CF9670099B038 /* InCourage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = InCourage.entitlements; sourceTree = "<group>"; };
 		383551962188FEDE007A453D /* InCourage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InCourage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		383551992188FEDE007A453D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3835519E2188FEDE007A453D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -128,6 +143,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		38132DB9219B89BB0099B038 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				38132DBA219B8A620099B038 /* AuthManager.swift */,
+				38132DBC219B8A900099B038 /* DatabaseManager.swift */,
+				38132DC0219B8AA80099B038 /* StoreManager.swift */,
+				38132DBE219B8A9D0099B038 /* Endpoint.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
 		3835518D2188FEDE007A453D = {
 			isa = PBXGroup;
 			children = (
@@ -153,8 +179,10 @@
 		383551982188FEDE007A453D /* InCourage */ = {
 			isa = PBXGroup;
 			children = (
+				38132DC2219CF9670099B038 /* InCourage.entitlements */,
 				383551992188FEDE007A453D /* AppDelegate.swift */,
 				383551CC2188FFFA007A453D /* ViewControllers */,
+				38132DB9219B89BB0099B038 /* Networking */,
 				383551D621890403007A453D /* ModelControllers */,
 				383551D3218903D8007A453D /* Models */,
 				3891F95D2190EFF3001D60D2 /* Views */,
@@ -210,6 +238,9 @@
 				383551CD21890022007A453D /* ProfileTableViewController.swift */,
 				3806E27A218A34C8007397B7 /* MessageDetailViewController.swift */,
 				38F296522194F5840044F4C8 /* SearchReminderGramViewController.swift */,
+				38132DB3219B82160099B038 /* CreateAccountViewController.swift */,
+				38132DB5219B82240099B038 /* LoginViewController.swift */,
+				38132DB7219B82390099B038 /* ResetPasswordViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -351,6 +382,9 @@
 						CreatedOnToolsVersion = 10.0;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
+								enabled = 1;
+							};
+							com.apple.Keychain = {
 								enabled = 1;
 							};
 						};
@@ -533,20 +567,27 @@
 			buildActionMask = 2147483647;
 			files = (
 				383551D8218904EB007A453D /* ReminderGramController.swift in Sources */,
+				38132DBB219B8A620099B038 /* AuthManager.swift in Sources */,
 				383551DA218904F6007A453D /* UserController.swift in Sources */,
 				3891F9632192818E001D60D2 /* SearchReminderGramsCollectionViewCell.swift in Sources */,
 				3891F95C2190EFEE001D60D2 /* MyMessagesTableViewCell.swift in Sources */,
+				38132DB6219B82240099B038 /* LoginViewController.swift in Sources */,
 				3891F95F219106EC001D60D2 /* MockReminderGrams.swift in Sources */,
 				38F2965A21961C880044F4C8 /* TemplateReminderGramController.swift in Sources */,
+				38132DB8219B82390099B038 /* ResetPasswordViewController.swift in Sources */,
+				38132DB4219B82160099B038 /* CreateAccountViewController.swift in Sources */,
 				38F296532194F5840044F4C8 /* SearchReminderGramViewController.swift in Sources */,
 				383551CE21890022007A453D /* ProfileTableViewController.swift in Sources */,
+				38132DBD219B8A900099B038 /* DatabaseManager.swift in Sources */,
 				3891F961219106F6001D60D2 /* MockUsers.swift in Sources */,
 				383551DC21890D72007A453D /* ComposeReminderGramViewController.swift in Sources */,
 				38F296562194FEFB0044F4C8 /* SearchReminderGramLayout.swift in Sources */,
 				383551D5218903EC007A453D /* User.swift in Sources */,
+				38132DBF219B8A9D0099B038 /* Endpoint.swift in Sources */,
 				3835519A2188FEDE007A453D /* AppDelegate.swift in Sources */,
 				3806E27B218A34C8007397B7 /* MessageDetailViewController.swift in Sources */,
 				383551CB2188FFF2007A453D /* SnapPhotoViewController.swift in Sources */,
+				38132DC1219B8AA80099B038 /* StoreManager.swift in Sources */,
 				38F2965821961C790044F4C8 /* TemplateReminderGramDictionary.swift in Sources */,
 				383551D2218903CD007A453D /* ReminderGram.swift in Sources */,
 			);
@@ -735,6 +776,7 @@
 			baseConfigurationReference = 59EF344DDB2D713E75ACEB2E /* Pods-InCourage.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = InCourage/InCourage.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S2V96BB45E;
 				INFOPLIST_FILE = "$(SRCROOT)/InCourageUITests/Info.plist";
@@ -754,6 +796,7 @@
 			baseConfigurationReference = 9F34131D4FCD79412F0E48BE /* Pods-InCourage.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = InCourage/InCourage.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S2V96BB45E;
 				INFOPLIST_FILE = "$(SRCROOT)/InCourageUITests/Info.plist";
