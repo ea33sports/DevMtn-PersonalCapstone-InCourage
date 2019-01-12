@@ -107,9 +107,9 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
         
         guard let firstName = firstNameTextField.text,
             let lastName = lastNameTextField.text,
-            let email = emailTextField.text,
+            let email = emailTextField.text?.lowercased(),
             let password = passwordTextField.text,
-            let username = usernameTextField.text
+            let username = usernameTextField.text?.lowercased()
             else { return }
         
         let trimmedFirstName = firstName.trimmingCharacters(in: .whitespaces)
@@ -123,7 +123,7 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
             }
             
             if let user = authDataResult?.user {
-                let currentUser = User(uid: user.uid, email: user.email!, username: username, loggedIn: true, firstName: trimmedFirstName, lastName: trimmedLastName, isPrivate: false, profilePic: "", lifePerspective: "", loveRating: 0, reminderGramInbox: [], reminderGramOutbox: [], totalReminderGramsSent: 0)
+                let currentUser = User(uid: user.uid, email: user.email!, username: username, loggedIn: true, firstName: trimmedFirstName, lastName: trimmedLastName, isPrivate: false, profilePic: "", lifePerspective: "", loveRating: 0, reminderGramInboxIDs: [], reminderGramOutboxIDs: [], totalReminderGramsSent: 0)
                 Endpoint.database.collection("users").document(user.uid).setData(currentUser.firebaseDictionary)
                 
                 Endpoint.auth.signIn(withEmail: trimmedEmail, password: password) { (authDataResult, error) in

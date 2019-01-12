@@ -60,7 +60,6 @@ class LoginViewController: UIViewController {
             }
             print("successful Sign-in")
         }
-        dismiss(animated: true, completion: nil)
     }
     @IBAction func createAccountButtonTapped(_ sender: UIButton) {
         performSegue(withIdentifier: "loginToCreateAccountVC", sender: self)

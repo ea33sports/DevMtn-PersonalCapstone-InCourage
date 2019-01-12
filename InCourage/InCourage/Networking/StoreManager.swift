@@ -25,7 +25,10 @@ class StorageManager {
     // Upload
     func uploadData(toStoragePath storagePath: String, uploadData: Data, completion: @escaping (_ success: Bool) -> Void) {
         
-        Endpoint.storageRef.child(storagePath).putData(uploadData, metadata: nil) { (storageMetaData, error) in
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/jpeg"
+        
+        Endpoint.storageRef.child(storagePath).putData(uploadData, metadata: metaData) { (storageMetaData, error) in
             if let error = error {
                 print("Error upload data to storage path: \(storagePath) \(error) \(error.localizedDescription)")
                 completion(false)
@@ -57,6 +60,33 @@ class StorageManager {
     
     // MARK: - Image
     // Upload
+//    func uploadProfileImage(_ image: UIImage, completion: @escaping (URL?) -> Void) {
+//
+//        guard let currentUser = UserController.shared.currentUser else { return }
+//
+//        if let data = image.jpegData(compressionQuality: 0.4) {
+//
+//            let metadata = StorageMetadata()
+//            metadata.contentType = "image/jpeg"
+//
+//            let profileImageStoragePath = Storage.storage().reference(withPath: "profileImages").child("\(currentUser.uid)").child("profilePic.png")
+//            let metaData = StorageMetadata()
+//            metaData.contentType = "image/jpeg"
+//            profileImageStoragePath.putData(data, metadata: metaData) { (_, error) in
+//                if let error = error {
+//                    print(error)
+//                    completion(nil)
+//                    return
+//                }
+//            }
+//
+//            profileImageStoragePath.downloadURL { (url, error) in
+//                guard let url = url else { fatalError() }
+//                completion(url)
+//            }
+//        }
+//    }
+    
     func uploadProfileImage(_ image: UIImage, completion: @escaping (URL?) -> Void) {
         
         guard let currentUser = UserController.shared.currentUser else { return }
@@ -69,17 +99,17 @@ class StorageManager {
             let profileImageStoragePath = Storage.storage().reference(withPath: "profileImages").child("\(currentUser.uid)").child("profilePic.png")
             let metaData = StorageMetadata()
             metaData.contentType = "image/jpeg"
-            profileImageStoragePath.putData(data, metadata: metaData) { (_, error) in
+            profileImageStoragePath.putData(data, metadata: metaData) { (metadata, error) in
                 if let error = error {
                     print(error)
                     completion(nil)
                     return
                 }
-            }
-            
-            profileImageStoragePath.downloadURL { (url, error) in
-                guard let url = url else {return}
-                completion(url)
+                
+                profileImageStoragePath.downloadURL { (url, error) in
+                    guard let url = url else { fatalError() }
+                    completion(url)
+                }
             }
         }
     }
@@ -88,7 +118,6 @@ class StorageManager {
     func uploadReminderGramImage(_ image: UIImage, completion: @escaping (URL?) -> Void) {
         
         guard let reminderGram = reminderGram else { return }
-        
         if let data = image.jpegData(compressionQuality: 0.4) {
             
             let metadata = StorageMetadata()
@@ -190,7 +219,7 @@ class StorageManager {
     
     
     // Download
-    func downloadProfileImages(folderPath:String, success:@escaping (_ image:UIImage) -> (),failure: @escaping (_ error:Error) -> ()) {
+    func downloadProfileImages(folderPath: String, success: @escaping (_ image:UIImage) -> (), failure: @escaping (_ error:Error) -> ()) {
         
         guard let currentUser = UserController.shared.currentUser else { return }
         

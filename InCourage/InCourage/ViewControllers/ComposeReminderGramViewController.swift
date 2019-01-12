@@ -96,24 +96,28 @@ class ComposeReminderGramViewController: UIViewController {
     
     func uploadReminderGramImage(_ image: UIImage, completion: @escaping (URL?) -> Void) {
         
-        if let data = image.jpegData(compressionQuality: 0.4) {
+        guard let data = image.jpegData(compressionQuality: 0.4) else { fatalError() }
             
-            let metadata = StorageMetadata()
-            metadata.contentType = "image/jpeg"
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/jpeg"
+        
+        let reminderGramImageStoragePath = Storage.storage().reference(withPath: "reminderGramImages").child("\(self.receiver!.uid)").child("\((self.receiver!.reminderGramInboxIDs.count) + 1).png")
+        let metaData = StorageMetadata()
+        metaData.contentType = "image/jpeg"
+        reminderGramImageStoragePath.putData(data, metadata: metaData) { (_, error) in
             
-            let reminderGramImageStoragePath = Storage.storage().reference(withPath: "reminderGramImages").child("\(String(describing: self.receiver?.uid))").child("\(String(describing: self.reminderGram?.uid)).png")
-            let metaData = StorageMetadata()
-            metaData.contentType = "image/jpeg"
-            reminderGramImageStoragePath.putData(data, metadata: metaData) { (_, error) in
-                if let error = error {
-                    print(error)
-                    completion(nil)
-                    return
-                }
+            if let error = error {
+                print(error)
+                completion(nil)
+                return
             }
             
             reminderGramImageStoragePath.downloadURL { (url, error) in
-                guard let url = url else { return }
+                if let error = error {
+                    print("🙇🏽‍♀️\(error) \(error.localizedDescription)")
+                    completion(nil)
+                }
+                guard let url = url else { fatalError() }
                 completion(url)
             }
         }
@@ -140,32 +144,46 @@ class ComposeReminderGramViewController: UIViewController {
 //    }
     
     
+//    func saveReminderGram(reminderGram: ReminderGram, completion: @escaping (Bool) -> ()) {
+//        let dataToSave = reminderGram.firebaseDictionary
+//        if reminderGram.uid != "" {
+//            let ref = Endpoint.database.collection("reminderGrams").document(reminderGram.uid)
+//            ref.setData(dataToSave, completion: { (error) in
+//                if let error = error {
+//                    print("***Error Saving ReminderGram \(error) \(error.localizedDescription)")
+//                    completion(false)
+//                } else {
+//                    print("^^^Successfully saved ReminderGram!! UID: \(reminderGram.uid)")
+//                    completion(true)
+//                }
+//            })
+//        } else {
+//            var ref: DocumentReference? = nil // Let firestore create the new document
+//            ref = Endpoint.database.collection("reminderGrams").addDocument(data: dataToSave) { error in
+//                if let error = error {
+//                    print("*^*Error creating new ReminderGram \(error) \(error.localizedDescription)")
+//                    completion(false)
+//                } else {
+//                    print("^*^Successfully created ReminderGram!! UID: \(reminderGram.uid)")
+//                    reminderGram.uid = (ref?.documentID)!
+//                    completion(true)
+//                }
+//            }
+//        }
+//    }
+    
     func saveReminderGram(reminderGram: ReminderGram, completion: @escaping (Bool) -> ()) {
         let dataToSave = reminderGram.firebaseDictionary
-        if reminderGram.uid != "" {
-            let ref = Endpoint.database.collection("reminderGrams").document(reminderGram.uid)
-            ref.setData(dataToSave) { (error) in
-                if let error = error {
-                    print("***Error Saving ReminderGram \(error) \(error.localizedDescription)")
-                    completion(false)
-                } else {
-                    print("^^^Successfully saved ReminderGram!! UID: \(reminderGram.uid)")
-                    completion(true)
-                }
+        let ref = Endpoint.database.collection("reminderGrams").document(reminderGram.uid)
+        ref.setData(dataToSave, completion: { (error) in
+            if let error = error {
+                print("***Error Saving ReminderGram \(error) \(error.localizedDescription)")
+                completion(false)
+            } else {
+                print("^^^Successfully saved ReminderGram!! UID: \(reminderGram.uid)")
+                completion(true)
             }
-        } else {
-            var ref: DocumentReference? = nil // Let firestore create the new document
-            ref = Endpoint.database.collection("reminderGrams").addDocument(data: dataToSave) { error in
-                if let error = error {
-                    print("*^*Error creating new ReminderGram \(error) \(error.localizedDescription)")
-                    completion(false)
-                } else {
-                    print("^*^Successfully created ReminderGram!! UID: \(reminderGram.uid)")
-                    reminderGram.uid = (ref?.documentID)!
-                    completion(true)
-                }
-            }
-        }
+        })
     }
 
     
@@ -185,28 +203,40 @@ class ComposeReminderGramViewController: UIViewController {
             
             let trimmedSearchText = searchText.trimmingCharacters(in: .whitespaces)
             
-            Endpoint.database.collection("users").whereField("FBSearchDictionary", arrayContains: trimmedSearchText.lowercased()).getDocuments { (snapshot, error) in
+            Endpoint.database.collection("users").whereField("username", isEqualTo: trimmedSearchText.lowercased()).getDocuments { (snapshot, error) in
                 guard let docs = snapshot?.documents else { return }
                 if let error = error {
                     print("Error fetching users \(error) \(error.localizedDescription)")
                 } else {
                     for doc in docs {
-                        guard let user = User(userDictionary: doc.data()) else { return }
-                        
+                        guard let user = User(userDictionary: doc.data()) else { fatalError() }
                         self.filteredUser.append(user)
-                        self.searching = true
                         print(searchText)
                         print(user.username)
                     }
                 }
             }
             
+//            Endpoint.database.collection("users").whereField("FBSearchDictionary", arrayContains: trimmedSearchText.lowercased()).getDocuments { (snapshot, error) in
+//                guard let docs = snapshot?.documents else { return }
+//                if let error = error {
+//                    print("Error fetching users \(error) \(error.localizedDescription)")
+//                } else {
+//                    for doc in docs {
+//                        guard let user = User(userDictionary: doc.data()) else { fatalError() }
+//
+//                        self.filteredUser.append(user)
+//                        self.searching = true
+//                        print(searchText)
+//                        print(user.username)
+//                    }
+//                }
+//            }
+            
         } else {
             searching = false
             recipientTableView.isHidden = true
         }
-        
-        
     }
     
     
@@ -226,18 +256,33 @@ class ComposeReminderGramViewController: UIViewController {
             recipientTextField.text != nil else { return }
         
         uploadReminderGramImage(image) { (url) in
-            guard let url = url else { return }
-            guard var reminderGram = self.reminderGram else { return }
-            reminderGram = ReminderGram(uid: uid, sender: sender, receiver: receiver, image: url.absoluteString, subject: subject, message: message, loveRating: 0)
-            self.saveReminderGram(reminderGram: reminderGram, completion: { (success) in
+            guard let url = url else { fatalError() }
+            self.reminderGram = ReminderGram(uid: uid, image: url.absoluteString, subject: subject, message: message)
+            
+//            guard let reminderGram = self.reminderGram else { return }
+            sender.reminderGramOutboxIDs.append(self.reminderGram!.uid)
+            receiver.reminderGramInboxIDs.append(self.reminderGram!.uid)
+            sender.totalReminderGramsSent += 1
+
+            print("🐝\(String(describing: sender.reminderGramOutboxIDs.last))")
+            print("🦅\(String(describing: sender.totalReminderGramsSent))")
+            print("🌯\(String(describing: receiver.reminderGramInboxIDs.last))")
+            
+            self.saveReminderGram(reminderGram: self.reminderGram!, completion: { (success) in
+                
+                print("🍣\(String(describing: sender.reminderGramOutboxIDs.last))")
+                print("🍼\(String(describing: receiver.reminderGramInboxIDs.last))")
+                
                 if success {
-                    print("SUCCESS!!")
+                    Endpoint.database.collection("users").document(sender.uid).updateData(["reminderGramOutboxIDs" : sender.reminderGramOutboxIDs])
+                    Endpoint.database.collection("users").document(receiver.uid).updateData(["reminderGramInboxIDs" : receiver.reminderGramInboxIDs])
+                    Endpoint.database.collection("users").document(sender.uid).updateData(["totalReminderGramsSent" : sender.totalReminderGramsSent])
+                    print("SUCCESS!!!")
                 } else {
                     print("👓 Couldn't save data")
                 }
             })
         }
-        
         self.dismiss(animated: true, completion: nil)
     }
 }

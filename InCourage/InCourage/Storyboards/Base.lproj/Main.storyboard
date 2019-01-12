@@ -223,8 +223,8 @@
                                         <constraint firstAttribute="height" constant="27" id="Lgg-jX-QBM"/>
                                     </constraints>
                                     <segments>
-                                        <segment title="First"/>
-                                        <segment title="Second"/>
+                                        <segment title="Inbox"/>
+                                        <segment title="Outbox"/>
                                     </segments>
                                     <connections>
                                         <action selector="reminderGramSegmentedControllerChanged:" destination="Env-KQ-h0u" eventType="valueChanged" id="bIO-q8-wv2"/>
@@ -257,7 +257,7 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="inboxCell" rowHeight="80" id="N1H-jF-b4t" customClass="MyMessagesTableViewCell" customModule="InCourage" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="inboxCell" rowHeight="80" id="N1H-jF-b4t" customClass="MyInboxTableViewCell" customModule="InCourage" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="383" width="375" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="N1H-jF-b4t" id="sfy-WR-a1j">
@@ -328,7 +328,7 @@
                                     <segue destination="be6-W1-RXK" kind="show" identifier="inboxToDetailVC" id="Cic-CW-2Gx"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="outboxCell" rowHeight="80" id="M6u-th-5av" customClass="MyMessagesTableViewCell" customModule="InCourage" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="outboxCell" rowHeight="80" id="M6u-th-5av" customClass="MyOutboxTableViewCell" customModule="InCourage" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="463" width="375" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="M6u-th-5av" id="S2J-ct-R7E">
@@ -352,7 +352,7 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rWS-Gy-Pac">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rWS-Gy-Pac" userLabel="Receiver Name Label">
                                             <rect key="frame" x="104" y="16" width="204" height="21"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="21" id="7uS-VM-udF"/>
@@ -392,10 +392,10 @@
                                 </tableViewCellContentView>
                                 <color key="backgroundColor" red="0.70122935119999996" green="0.8707368338" blue="0.86411157620000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <connections>
-                                    <outlet property="messageLoveRatingLabel" destination="061-Li-WJ9" id="Ueo-Ib-dsM"/>
-                                    <outlet property="messagePicImageView" destination="f0G-yO-7tU" id="1ff-mo-GNu"/>
-                                    <outlet property="messageSubjectLabel" destination="xYM-jg-VN9" id="AqU-Js-iOM"/>
-                                    <outlet property="senderNameLabel" destination="rWS-Gy-Pac" id="eOd-1G-xTo"/>
+                                    <outlet property="messageLoveRatingLabel" destination="061-Li-WJ9" id="r6M-kc-srd"/>
+                                    <outlet property="messagePicImageView" destination="f0G-yO-7tU" id="hQZ-vP-SXO"/>
+                                    <outlet property="messageSubjectLabel" destination="xYM-jg-VN9" id="Ylf-WD-KQc"/>
+                                    <outlet property="receiverNameLabel" destination="rWS-Gy-Pac" id="mau-Z9-syB"/>
                                     <segue destination="be6-W1-RXK" kind="show" identifier="outboxToDetailVC" id="cCe-Uh-SUF"/>
                                 </connections>
                             </tableViewCell>
@@ -436,8 +436,8 @@
                                     <constraint firstAttribute="height" constant="667" id="eGz-pB-GkD"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="WZm-pP-bhr">
-                                <rect key="frame" x="226" y="0.0" width="149" height="667"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="WZm-pP-bhr">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nAe-6Y-PU4">
                                 <rect key="frame" x="28" y="31" width="30" height="30"/>
@@ -549,7 +549,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="134" y="134"/>
+            <point key="canvasLocation" x="133.59999999999999" y="133.5832083958021"/>
         </scene>
         <!--Collection View Controller-->
         <scene sceneID="EBt-7q-KWc">
@@ -927,6 +927,7 @@
                                 </state>
                                 <connections>
                                     <action selector="loginButtonTapped:" destination="2xp-np-0zH" eventType="touchUpInside" id="GJC-sV-EUP"/>
+                                    <segue destination="BYZ-38-t0r" kind="show" id="Fjw-F3-XKu"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -1358,6 +1359,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="yXi-wi-sAq"/>
+        <segue reference="RkX-Lu-YvW"/>
         <segue reference="cCe-Uh-SUF"/>
     </inferredMetricsTieBreakers>
 </document>

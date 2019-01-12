@@ -8,6 +8,7 @@
 
 import UIKit
 import FirebaseAuth
+import PromiseKit
 
 class ProfileTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate {
 
@@ -21,6 +22,25 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     @IBOutlet weak var reminderGramSegmentedControl: UISegmentedControl!
     
     
+    
+    // MARK: - Variables
+    var inbox: [ReminderGram] = [] {
+        didSet{
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
+    var outbox: [ReminderGram] = [] {
+        didSet{
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
+    }
+    
+    
+    
     // MARK: - UI Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,8 +50,22 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         
         setUPUI()
         setUpGestures()
-        updateView()
         spinner.isHidden = true
+        updateView()
+        
+        guard let currentUser = UserController.shared.currentUser else { return }
+        fetchReminderGrams(ids: currentUser.reminderGramInboxIDs) { (inboxReminderGrams) in
+            self.inbox = inboxReminderGrams
+        }
+        fetchReminderGrams(ids: currentUser.reminderGramOutboxIDs) { (outboxReminderGrams) in
+            self.outbox = outboxReminderGrams
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -73,14 +107,44 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
                     self.profileImageView.image = image
                 }
             }) { (error) in
-                print(error)
+                print(error, error.localizedDescription)
             }
         }
         
         
         myLoveRatingLabel.text = "\(currentUser.loveRating)"
-        totalMessagesSentLabel.text = "\(currentUser.totalReminderGramsSent ?? 0)"
+        totalMessagesSentLabel.text = "\(currentUser.totalReminderGramsSent)"
         whatIsLifeTextView.text = currentUser.lifePerspective
+    }
+    
+    
+    func fetchUser() {
+        Endpoint.database.collection("users").document((UserController.shared.currentUser?.uid)!).getDocument { (snapshot, error) in
+            if let error = error {
+                print("😤 Error getting user \(error) \(error.localizedDescription)")
+            }
+            
+            if let documents = snapshot {
+                guard let userDictionary = documents.data() else { return }
+                UserController.shared.currentUser = User(userDictionary: userDictionary)
+            }
+        }
+    }
+    
+    
+    func fetchReminderGrams(ids: [String], completion: @escaping ([ReminderGram]) -> Void) {
+
+        Endpoint.database.collection("reminderGrams").getDocuments { (snapshot, error) in
+            if let error = error {
+                print("😤 Error getting reminderGrams \(error) \(error.localizedDescription)")
+            }
+
+            if let documents = snapshot {
+                let reminderGramDictionaries = documents.documents.map({ $0.data() })
+                let result = reminderGramDictionaries.map({ ReminderGram.init(reminderGramDictionary: $0) }).compactMap({ $0 }).filter({ ids.contains( ($0.uid) ) })
+                completion(result)
+            }
+        }
     }
     
     
@@ -200,13 +264,10 @@ extension ProfileTableViewController {
         
         var returnValue = 0
         
-        switch reminderGramSegmentedControl.selectedSegmentIndex {
-        case 0:
-            returnValue = UserController.shared.currentUser?.reminderGramInbox?.count ?? 0
-        case 1:
-            returnValue = UserController.shared.currentUser?.reminderGramOutbox?.count ?? 0
-        default:
-            break
+        if self.reminderGramSegmentedControl.selectedSegmentIndex == 0 {
+            returnValue = inbox.count
+        } else if self.reminderGramSegmentedControl.selectedSegmentIndex == 1 {
+            returnValue = outbox.count
         }
         
         return returnValue
@@ -215,24 +276,19 @@ extension ProfileTableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        var cell = UITableViewCell()
-        guard let inboxCell = tableView.dequeueReusableCell(withIdentifier: "inboxCell", for: indexPath) as? MyMessagesTableViewCell,
-            let outboxCell = tableView.dequeueReusableCell(withIdentifier: "outboxCell", for: indexPath) as? MyMessagesTableViewCell else { return UITableViewCell() }
-        
         // Configure the cell...]
-        let reminderGramReceived = UserController.shared.currentUser?.reminderGramInbox?[indexPath.row]
-        let reminderGramsSent = UserController.shared.currentUser?.reminderGramOutbox?[indexPath.row]
+        var cell = UITableViewCell()
         
-        switch reminderGramSegmentedControl.selectedSegmentIndex {
-        case 0:
-            inboxCell.reminderGram = reminderGramReceived
-            cell = inboxCell
-        case 1:
-            outboxCell.reminderGram = reminderGramsSent
-            cell = outboxCell
-        default:
-            inboxCell.reminderGram = reminderGramReceived
-            cell = inboxCell
+        if self.reminderGramSegmentedControl.selectedSegmentIndex == 0 {
+            let inboxCell = tableView.dequeueReusableCell(withIdentifier: "inboxCell", for: indexPath) as? MyInboxTableViewCell
+            let reminderGramsReceived = inbox[indexPath.row]
+            inboxCell?.reminderGram = reminderGramsReceived
+            cell = inboxCell!
+        } else if self.reminderGramSegmentedControl.selectedSegmentIndex == 1 {
+            let outboxCell = tableView.dequeueReusableCell(withIdentifier: "outboxCell", for: indexPath) as? MyOutboxTableViewCell
+            let reminderGramsSent = outbox[indexPath.row]
+            outboxCell?.reminderGram = reminderGramsSent
+            cell = outboxCell!
         }
         
         return cell
@@ -267,13 +323,13 @@ extension ProfileTableViewController {
         if segue.identifier == "inboxToDetailVC" {
             let destinationVC = segue.destination as? MessageDetailViewController
             guard let indexPath = tableView.indexPathForSelectedRow else { return }
-            let reminderGram = UserController.shared.currentUser?.reminderGramInbox?[indexPath.row]
-            destinationVC?.reminderGram = reminderGram
+            let reminderGram = UserController.shared.currentUser?.reminderGramInboxIDs[indexPath.row]
+            destinationVC?.reminderGram?.uid = reminderGram!
         } else if segue.identifier == "outboxToDetailVC" {
             let destinationVC = segue.destination as? MessageDetailViewController
             guard let indexPath = tableView.indexPathForSelectedRow else { return }
-            let reminderGram = UserController.shared.currentUser?.reminderGramOutbox?[indexPath.row]
-            destinationVC?.reminderGram = reminderGram
+            let reminderGram = UserController.shared.currentUser?.reminderGramOutboxIDs[indexPath.row]
+            destinationVC?.reminderGram?.uid = reminderGram!
         }
     }
 }

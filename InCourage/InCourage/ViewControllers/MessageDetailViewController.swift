@@ -48,8 +48,8 @@ class MessageDetailViewController: UIViewController {
     // MARK: - Functions
     func updateView() {
         
-        guard let reminderGram = reminderGram,
-            let profilePic = reminderGram.sender.profilePic else { return }
+        guard let reminderGram = reminderGram else { return }
+//        let profilePic = reminderGram.sender.profilePic
         
         StorageManager.shared.downloadProfileImages(folderPath: "profileImages", success: { (image) in
             DispatchQueue.main.async {
@@ -78,7 +78,7 @@ class MessageDetailViewController: UIViewController {
             }
         }
         
-        senderLabel.text = "From: \(reminderGram.sender.fullName)"
+//        senderLabel.text = "From: \(reminderGram.sender.fullName)"
         subjectLabel.text = reminderGram.subject
         loveRatingLabel.text = "❤️\(reminderGram.loveRating)"
         messageTextView.text = reminderGram.message

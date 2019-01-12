@@ -93,7 +93,7 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
                 
                 if let document = snapshot {
                     guard let userDictionary = document.data() else { return }
-                    UserController.shared.currentUser = User(userDictionary: userDictionary)
+                    UserController.shared.currentUser = User(userDictionary: userDictionary)!
                     UserController.shared.isUserLoggedIn = true
                     print("✅ Successfully Fetched logged in user! \(Auth.auth().currentUser?.email) 🐩\(UserController.shared.currentUser?.username)")
                 }
@@ -189,7 +189,7 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
     
     func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
         if let error = error {
-            debugPrint(error)
+            debugPrint("🧛🏽‍♀️ \(error) \(error.localizedDescription)")
         } else {
             photoData = photo.fileDataRepresentation()
             guard let image = UIImage(data: photoData!) else { return }
@@ -342,7 +342,6 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
             spinner.startAnimating()
             let settings = AVCapturePhotoSettings(format: [AVVideoCodecKey : AVVideoCodecType.jpeg])
             stillImageOutput.capturePhoto(with: settings, delegate: self)
-            captureSession.stopRunning()
             previewView.isHidden = true
             sender.setImage(#imageLiteral(resourceName: "addBucketListItem"), for: .normal)
             searchIcon.tag = 1

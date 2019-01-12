@@ -1,22 +1,23 @@
 //
-//  MyMessagesTableViewCell.swift
+//  MyOutboxTableViewCell.swift
 //  InCourage
 //
-//  Created by Eric Andersen on 11/5/18.
-//  Copyright © 2018 Eric Andersen. All rights reserved.
+//  Created by Eric Andersen on 1/9/19.
+//  Copyright © 2019 Eric Andersen. All rights reserved.
 //
 
 import UIKit
 
-class MyMessagesTableViewCell: UITableViewCell {
-
+class MyOutboxTableViewCell: UITableViewCell {
+    
     // MARK: - Outlets
     @IBOutlet weak var messagePicImageView: UIImageView!
-    @IBOutlet weak var senderNameLabel: UILabel!
+    @IBOutlet weak var receiverNameLabel: UILabel!
     @IBOutlet weak var messageSubjectLabel: UILabel!
     @IBOutlet weak var messageLoveRatingLabel: UILabel!
     
     
+
     // MARK: - Properties
     var reminderGram: ReminderGram? {
         didSet {
@@ -25,9 +26,10 @@ class MyMessagesTableViewCell: UITableViewCell {
     }
     
     
+    
     // MARK: - Functions
     func updateViews() {
-        guard let reminderGram = reminderGram else { return }
+//        guard let reminderGram = reminderGram else { return }
 //        messagePicImageView.image = reminderGram.image
 //        senderNameLabel.text = reminderGram.sender.fullName
 //        messageSubjectLabel.text = reminderGram.subject
@@ -39,12 +41,13 @@ class MyMessagesTableViewCell: UITableViewCell {
     // MARK: - UI Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        
+        
     }
-
+    
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
+        
         // Configure the view for the selected state
     }
 

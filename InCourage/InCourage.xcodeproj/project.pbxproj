@@ -17,6 +17,7 @@
 		38132DBD219B8A900099B038 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38132DBC219B8A900099B038 /* DatabaseManager.swift */; };
 		38132DBF219B8A9D0099B038 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38132DBE219B8A9D0099B038 /* Endpoint.swift */; };
 		38132DC1219B8AA80099B038 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38132DC0219B8AA80099B038 /* StoreManager.swift */; };
+		3824AD4C21E6D4E30017C550 /* MyOutboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824AD4B21E6D4E30017C550 /* MyOutboxTableViewCell.swift */; };
 		3835519A2188FEDE007A453D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383551992188FEDE007A453D /* AppDelegate.swift */; };
 		3835519F2188FEDE007A453D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3835519D2188FEDE007A453D /* Main.storyboard */; };
 		383551A12188FEE0007A453D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 383551A02188FEE0007A453D /* Assets.xcassets */; };
@@ -33,7 +34,7 @@
 		38494997218A6C75007D3EA9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38494999218A6C75007D3EA9 /* Info.plist */; };
 		3849499B218A6C9A007D3EA9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38494999218A6C75007D3EA9 /* Info.plist */; };
 		3849499C218A6C9B007D3EA9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38494999218A6C75007D3EA9 /* Info.plist */; };
-		3891F95C2190EFEE001D60D2 /* MyMessagesTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3891F95B2190EFEE001D60D2 /* MyMessagesTableViewCell.swift */; };
+		3891F95C2190EFEE001D60D2 /* MyInboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3891F95B2190EFEE001D60D2 /* MyInboxTableViewCell.swift */; };
 		3891F95F219106EC001D60D2 /* MockReminderGrams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3891F95E219106EC001D60D2 /* MockReminderGrams.swift */; };
 		3891F961219106F6001D60D2 /* MockUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3891F960219106F6001D60D2 /* MockUsers.swift */; };
 		3891F9632192818E001D60D2 /* SearchReminderGramsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3891F9622192818E001D60D2 /* SearchReminderGramsCollectionViewCell.swift */; };
@@ -74,6 +75,7 @@
 		38132DBE219B8A9D0099B038 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		38132DC0219B8AA80099B038 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
 		38132DC2219CF9670099B038 /* InCourage.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = InCourage.entitlements; sourceTree = "<group>"; };
+		3824AD4B21E6D4E30017C550 /* MyOutboxTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOutboxTableViewCell.swift; sourceTree = "<group>"; };
 		383551962188FEDE007A453D /* InCourage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InCourage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		383551992188FEDE007A453D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3835519E2188FEDE007A453D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -94,7 +96,7 @@
 		383551DB21890D72007A453D /* ComposeReminderGramViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeReminderGramViewController.swift; sourceTree = "<group>"; };
 		38494998218A6C75007D3EA9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Info.plist; sourceTree = "<group>"; };
 		3849499A218A6C99007D3EA9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/Info.plist; sourceTree = "<group>"; };
-		3891F95B2190EFEE001D60D2 /* MyMessagesTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMessagesTableViewCell.swift; sourceTree = "<group>"; };
+		3891F95B2190EFEE001D60D2 /* MyInboxTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyInboxTableViewCell.swift; sourceTree = "<group>"; };
 		3891F95E219106EC001D60D2 /* MockReminderGrams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockReminderGrams.swift; sourceTree = "<group>"; };
 		3891F960219106F6001D60D2 /* MockUsers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUsers.swift; sourceTree = "<group>"; };
 		3891F9622192818E001D60D2 /* SearchReminderGramsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReminderGramsCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -270,7 +272,8 @@
 		3891F95D2190EFF3001D60D2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				3891F95B2190EFEE001D60D2 /* MyMessagesTableViewCell.swift */,
+				3891F95B2190EFEE001D60D2 /* MyInboxTableViewCell.swift */,
+				3824AD4B21E6D4E30017C550 /* MyOutboxTableViewCell.swift */,
 				3891F9622192818E001D60D2 /* SearchReminderGramsCollectionViewCell.swift */,
 			);
 			path = Views;
@@ -463,6 +466,7 @@
 				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
@@ -479,6 +483,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
@@ -570,7 +575,8 @@
 				38132DBB219B8A620099B038 /* AuthManager.swift in Sources */,
 				383551DA218904F6007A453D /* UserController.swift in Sources */,
 				3891F9632192818E001D60D2 /* SearchReminderGramsCollectionViewCell.swift in Sources */,
-				3891F95C2190EFEE001D60D2 /* MyMessagesTableViewCell.swift in Sources */,
+				3824AD4C21E6D4E30017C550 /* MyOutboxTableViewCell.swift in Sources */,
+				3891F95C2190EFEE001D60D2 /* MyInboxTableViewCell.swift in Sources */,
 				38132DB6219B82240099B038 /* LoginViewController.swift in Sources */,
 				3891F95F219106EC001D60D2 /* MockReminderGrams.swift in Sources */,
 				38F2965A21961C880044F4C8 /* TemplateReminderGramController.swift in Sources */,

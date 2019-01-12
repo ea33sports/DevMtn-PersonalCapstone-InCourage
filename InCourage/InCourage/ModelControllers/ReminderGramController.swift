@@ -22,13 +22,13 @@ class ReminderGramController {
     
     
     // MARK: - CRUD
-    func createReminderGram(uid: String, sender: User, receiver: User, image: UIImage, subject: String, message: String) {
+    func createReminderGram(uid: String, image: UIImage, subject: String, message: String) {
         
         // Save
         StorageManager.shared.uploadReminderGramImage(image) { (url) in
             
             guard let url = url else { return }
-            let reminderGram = ReminderGram(uid: uid, sender: sender, receiver: receiver, image: url.absoluteString, subject: subject, message: message, loveRating: 0)
+            let reminderGram = ReminderGram(uid: uid, image: url.absoluteString, subject: subject, message: message)
             
             self.reminderGrams.append(reminderGram)
             
