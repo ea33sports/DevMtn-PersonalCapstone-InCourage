@@ -25,6 +25,7 @@ class ComposeReminderGramViewController: UIViewController {
     
     // MARK: - Properties
     var reminderGram: ReminderGram?
+    let uid = UUID().uuidString
     var selectedPhoto: UIImage?
     var usernameArray: [String] = []
     var receiver: User?
@@ -97,13 +98,11 @@ class ComposeReminderGramViewController: UIViewController {
     func uploadReminderGramImage(_ image: UIImage, completion: @escaping (URL?) -> Void) {
         
         guard let data = image.jpegData(compressionQuality: 0.4) else { fatalError() }
-            
-        let metadata = StorageMetadata()
-        metadata.contentType = "image/jpeg"
-        
-        let reminderGramImageStoragePath = Storage.storage().reference(withPath: "reminderGramImages").child("\(self.receiver!.uid)").child("\((self.receiver!.reminderGramInboxIDs.count) + 1).png")
         let metaData = StorageMetadata()
         metaData.contentType = "image/jpeg"
+        
+        let reminderGramImageStoragePath = Storage.storage().reference(withPath: "reminderGramImages").child("\(uid).png")
+        
         reminderGramImageStoragePath.putData(data, metadata: metaData) { (_, error) in
             
             if let error = error {
@@ -246,8 +245,6 @@ class ComposeReminderGramViewController: UIViewController {
     
     @IBAction func sendButtonTapped(_ sender: UIButton) {
         
-        let uid = UUID().uuidString
-        
         guard let sender = UserController.shared.currentUser,
             let receiver = receiver,
             let image = reminderGramPhoto.image,
@@ -257,7 +254,7 @@ class ComposeReminderGramViewController: UIViewController {
         
         uploadReminderGramImage(image) { (url) in
             guard let url = url else { fatalError() }
-            self.reminderGram = ReminderGram(uid: uid, image: url.absoluteString, subject: subject, message: message)
+            self.reminderGram = ReminderGram(uid: self.uid, sender: sender.uid, receiver: receiver.uid, image: url.absoluteString, subject: subject, message: message)
             
 //            guard let reminderGram = self.reminderGram else { return }
             sender.reminderGramOutboxIDs.append(self.reminderGram!.uid)
@@ -320,7 +317,7 @@ extension ComposeReminderGramViewController: UITextFieldDelegate, UITextViewDele
     
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        if(text == "\n") {
+        if (text == "\n") {
             reminderGramMessageTextView.resignFirstResponder()
             return false
         }

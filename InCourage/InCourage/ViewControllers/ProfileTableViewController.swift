@@ -24,26 +24,16 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     
     
     // MARK: - Variables
-    var inbox: [ReminderGram] = [] {
-        didSet{
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
-    var outbox: [ReminderGram] = [] {
-        didSet{
-            DispatchQueue.main.async {
-                self.tableView.reloadData()
-            }
-        }
-    }
+    var inbox: [ReminderGram] = []
+    var outbox: [ReminderGram] = []
     
     
     
     // MARK: - UI Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(updateReminderGrams), name: NSNotification.Name(rawValue: "load"), object: nil)
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
@@ -56,16 +46,15 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         guard let currentUser = UserController.shared.currentUser else { return }
         fetchReminderGrams(ids: currentUser.reminderGramInboxIDs) { (inboxReminderGrams) in
             self.inbox = inboxReminderGrams
+            self.inbox.sort(by: { $1.loveRating < $0.loveRating })
+            self.tableView.reloadData()
         }
+        
         fetchReminderGrams(ids: currentUser.reminderGramOutboxIDs) { (outboxReminderGrams) in
             self.outbox = outboxReminderGrams
+            self.outbox.sort(by: { $1.loveRating < $0.loveRating })
+            self.tableView.reloadData()
         }
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -115,6 +104,23 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         myLoveRatingLabel.text = "\(currentUser.loveRating)"
         totalMessagesSentLabel.text = "\(currentUser.totalReminderGramsSent)"
         whatIsLifeTextView.text = currentUser.lifePerspective
+    }
+    
+    
+    func clearView() {
+        profileImageView.image = #imageLiteral(resourceName: "profileIcon")
+        myLoveRatingLabel.text = "❤️"
+        totalMessagesSentLabel.text = "0"
+        whatIsLifeTextView.text = ""
+        inbox = []
+        outbox = []
+        tableView.reloadData()
+    }
+    
+    @objc func updateReminderGrams() {
+        inbox.sort(by: { $1.loveRating < $0.loveRating })
+        outbox.sort(by: { $1.loveRating < $0.loveRating })
+        tableView.reloadData()
     }
     
     
@@ -226,6 +232,8 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         let logoutButton = UIAlertAction(title: "Log Out", style: .default) { (action) in
             do {
                 try Endpoint.auth.signOut()
+                UserController.shared.currentUser = nil
+                self.clearView()
                 print("Logged out. \(String(describing: Auth.auth().currentUser?.email))")
             } catch {
                 print("Could not log out the user")
@@ -323,13 +331,23 @@ extension ProfileTableViewController {
         if segue.identifier == "inboxToDetailVC" {
             let destinationVC = segue.destination as? MessageDetailViewController
             guard let indexPath = tableView.indexPathForSelectedRow else { return }
-            let reminderGram = UserController.shared.currentUser?.reminderGramInboxIDs[indexPath.row]
-            destinationVC?.reminderGram?.uid = reminderGram!
+            let reminderGram = inbox[indexPath.row]
+            destinationVC?.reminderGram = reminderGram
+            destinationVC?.fetchSender(id: reminderGram.sender, completion: { (sender) in
+                destinationVC?.senderUser = sender
+                destinationVC?.loveRatingView.isHidden = false
+                destinationVC?.updateView()
+            })
         } else if segue.identifier == "outboxToDetailVC" {
             let destinationVC = segue.destination as? MessageDetailViewController
             guard let indexPath = tableView.indexPathForSelectedRow else { return }
-            let reminderGram = UserController.shared.currentUser?.reminderGramOutboxIDs[indexPath.row]
-            destinationVC?.reminderGram?.uid = reminderGram!
+            let reminderGram = outbox[indexPath.row]
+            destinationVC?.reminderGram = reminderGram
+            destinationVC?.fetchReceiver(id: reminderGram.receiver, completion: { (receiver) in
+                destinationVC?.receiverUser = receiver
+                destinationVC?.loveRatingView.isHidden = true
+                destinationVC?.updateView()
+            })
         }
     }
 }

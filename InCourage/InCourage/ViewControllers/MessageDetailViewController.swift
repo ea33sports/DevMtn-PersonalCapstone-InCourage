@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseStorage
 
 class MessageDetailViewController: UIViewController {
 
@@ -15,32 +16,31 @@ class MessageDetailViewController: UIViewController {
     @IBOutlet weak var senderLabel: UILabel!
     @IBOutlet weak var messageImage: UIImageView!
     @IBOutlet weak var subjectLabel: UILabel!
-    @IBOutlet weak var loveRatingLabel: UILabel!
     @IBOutlet weak var messageTextView: UITextView!
+    @IBOutlet weak var loveRatingView: UIView!
+    @IBOutlet weak var loveRatingLabel: UILabel!
     @IBOutlet weak var loveRatingStepper: UIStepper!
     
     
     
     // MARK: - Properties
     var reminderGram: ReminderGram?
+    var senderUser: User?
+    var receiverUser: User?
+    var theLoveRating = 0
     
     
     
     // MARK: - UI Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         
-        updateView()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        updateLoveRating()
+        saveLoveRating()
     }
     
     
@@ -49,48 +49,134 @@ class MessageDetailViewController: UIViewController {
     func updateView() {
         
         guard let reminderGram = reminderGram else { return }
-//        let profilePic = reminderGram.sender.profilePic
         
-        StorageManager.shared.downloadProfileImages(folderPath: "profileImages", success: { (image) in
-            DispatchQueue.main.async {
-                self.senderProfilePic.image = image
-            }
+        downloadReminderGramImage(folderPath: "reminderGramImages", success: { (image) in
+            self.messageImage.image = image
         }) { (error) in
-            print(error)
+            print(error, error.localizedDescription)
         }
         
-        StorageManager.shared.downloadReminderGramImages(folderPath: "reminderGramImages", success: { (image) in
-            DispatchQueue.main.async {
-                self.messageImage.image = image
+        if let receiver = receiverUser {
+            downloadProfileImage(folderPath: "profileImages", user: receiver.uid, success: { (image) in
+                DispatchQueue.main.async {
+                    self.senderProfilePic.image = image
+                }
+            }) { (error) in
+                print(error)
             }
-        }) { (error) in
-            print(error)
+            senderLabel.text = "To: \(receiver.username)"
+            
+        } else if let sender = senderUser {
+            downloadProfileImage(folderPath: "profileImages", user: sender.uid, success: { (image) in
+                DispatchQueue.main.async {
+                    self.senderProfilePic.image = image
+                }
+            }) { (error) in
+                print(error)
+            }
+            senderLabel.text = "From: \(sender.username)"
         }
         
-        Endpoint.database.collection("reminderGrams").document(reminderGram.uid).getDocument { (snapshot, error) in
+        subjectLabel.text = reminderGram.subject
+        loveRatingLabel.text = "❤️ \(reminderGram.loveRating)"
+        messageTextView.text = reminderGram.message
+        
+        loveRatingStepper.minimumValue = Double(reminderGram.loveRating - (reminderGram.loveRating * 2))
+        loveRatingStepper.maximumValue = .infinity
+    }
+    
+    
+    func downloadProfileImage(folderPath: String, user: String, success: @escaping (_ image: UIImage) -> (), failure: @escaping (_ error: Error) -> ()) {
+        
+        let reference = Storage.storage().reference(withPath: "profileImages").child(user).child("profilePic.png")
+        
+        // Create a reference with an initial file path and name
+       
+        reference.getData(maxSize: (1 * 1024 * 1024)) { (data, error) in
+            if let _error = error{
+                print(_error)
+                failure(_error)
+            } else {
+                if let _data  = data {
+                    let myImage: UIImage! = UIImage(data: _data)
+                    success(myImage)
+                }
+            }
+        }
+    }
+    
+    
+    func fetchSender(id: String, completion: @escaping (User) -> Void) {
+        
+        guard let reminderGram = reminderGram else { fatalError() }
+        Endpoint.database.collection("users").document(reminderGram.sender).getDocument { (snapshot, error) in
             
             if let error = error {
-                print("🌺 Error fetching reminderGram. \(error) \(error.localizedDescription)")
+                print("😤 Error getting user \(error) \(error.localizedDescription)")
             }
             
             if let document = snapshot {
-                
+                guard let userDictionary = document.data(),
+                    let sender = User(userDictionary: userDictionary) else { fatalError() }
+                completion(sender)
             }
         }
+    }
+    
+    
+    func fetchReceiver(id: String, completion: @escaping (User) -> Void) {
         
-//        senderLabel.text = "From: \(reminderGram.sender.fullName)"
-        subjectLabel.text = reminderGram.subject
-        loveRatingLabel.text = "❤️\(reminderGram.loveRating)"
-        messageTextView.text = reminderGram.message
+        guard let reminderGram = reminderGram else { fatalError() }
+        Endpoint.database.collection("users").document(reminderGram.receiver).getDocument { (snapshot, error) in
+            
+            if let error = error {
+                print("😤 Error getting user \(error) \(error.localizedDescription)")
+            }
+            
+            if let document = snapshot {
+                guard let userDictionary = document.data(),
+                    let receiveree = User(userDictionary: userDictionary) else { fatalError() }
+                completion(receiveree)
+            }
+        }
+    }
+    
+    
+    func downloadReminderGramImage(folderPath: String, success: @escaping (_ image: UIImage) -> (),failure: @escaping (_ error:Error) -> ()) {
         
-        loveRatingStepper.maximumValue = .infinity
+        guard let reminderGram = reminderGram else { return }
+        
+        // Create a reference with an initial file path and name
+        let reference = Storage.storage().reference(withPath: "reminderGramImages").child("\(reminderGram.uid).png")
+        reference.getData(maxSize: (1 * 1024 * 1024)) { (data, error) in
+            if let _error = error{
+                print(_error)
+                failure(_error)
+            } else {
+                if let _data  = data {
+                    let myImage:UIImage! = UIImage(data: _data)
+                    success(myImage)
+                }
+            }
+        }
     }
     
     
     func updateLoveRating() {
         guard let reminderGram = reminderGram else { return }
-        reminderGram.loveRating = Int(loveRatingLabel.text ?? "") ?? 0
-        ReminderGramController.shared.updateReminderGram(reminderGram: reminderGram, newLoveRating: Int(loveRatingLabel.text ?? "") ?? 0)
+        let loveRating = reminderGram.loveRating
+        let loveDifference = Int(loveRatingStepper.value)
+        let updatedLoveRating = loveRating + loveDifference
+        loveRatingLabel.text = "❤️ \(updatedLoveRating)"
+        theLoveRating = updatedLoveRating
+    }
+    
+    
+    func saveLoveRating() {
+        guard let reminderGram = reminderGram else { return }
+        reminderGram.loveRating = theLoveRating
+        Endpoint.database.collection("reminderGrams").document(reminderGram.uid).updateData(["loveRating" : reminderGram.loveRating])
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "load"), object: nil)
     }
     
     
@@ -102,21 +188,6 @@ class MessageDetailViewController: UIViewController {
     
     
     @IBAction func loveRatingStepperStepped(_ sender: UIStepper) {
-        guard let reminderGram = reminderGram else { return }
-        loveRatingLabel.text = "❤️\(reminderGram.loveRating ?? 0 + Int(sender.value))"
+        updateLoveRating()
     }
-}
-
-
-
-extension MessageDetailViewController {
-    
-    /*
-     // MARK: - Navigation
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
 }

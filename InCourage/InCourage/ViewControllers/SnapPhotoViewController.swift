@@ -169,7 +169,7 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
             
             DispatchQueue.main.async {
                 self.videoPreviewLayer.frame = self.previewView.bounds
-            }
+            } 
         }
     }
     

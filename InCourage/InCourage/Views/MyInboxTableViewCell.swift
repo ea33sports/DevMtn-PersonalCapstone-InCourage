@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseStorage
 
 class MyInboxTableViewCell: UITableViewCell {
 
@@ -27,11 +28,57 @@ class MyInboxTableViewCell: UITableViewCell {
     
     // MARK: - Functions
     func updateViews() {
-//        guard let reminderGram = reminderGram else { return }
-//        messagePicImageView.image = reminderGram.image
-//        senderNameLabel.text = reminderGram.sender.fullName
-//        messageSubjectLabel.text = reminderGram.subject
-//        messageLoveRatingLabel.text = "❤️\(reminderGram.loveRating)"
+        guard let reminderGram = reminderGram else { return }
+        downloadReminderGramImage(folderPath: reminderGram.uid, success: { (image) in
+            self.messagePicImageView.image = image
+        }) { (error) in
+            print(error, error.localizedDescription)
+        }
+        
+        fetchSender { (sender) in
+            self.senderNameLabel.text = "From: \(sender.username)"
+        }
+        
+        messageSubjectLabel.text = reminderGram.subject
+        messageLoveRatingLabel.text = "❤️\(reminderGram.loveRating)"
+    }
+    
+    
+    func downloadReminderGramImage(folderPath: String, success: @escaping (_ image: UIImage) -> (),failure: @escaping (_ error: Error) -> ()) {
+        
+        guard let reminderGram = reminderGram else { return }
+        
+        // Create a reference with an initial file path and name
+        let reference = Storage.storage().reference(withPath: "reminderGramImages").child("\(reminderGram.uid).png")
+        reference.getData(maxSize: (1 * 1024 * 1024)) { (data, error) in
+            if let _error = error{
+                print(_error)
+                failure(_error)
+            } else {
+                if let _data  = data {
+                    let myImage:UIImage! = UIImage(data: _data)
+                    success(myImage)
+                }
+            }
+        }
+    }
+    
+    
+    func fetchSender(completion: @escaping (User) -> Void) {
+        
+        guard let reminderGram = reminderGram else { return }
+        Endpoint.database.collection("users").document(reminderGram.sender).getDocument { (snapshot, error) in
+            
+            if let error = error {
+                print("😤 Error getting user \(error) \(error.localizedDescription)")
+            }
+            
+            if let document = snapshot {
+                guard let userDictionary = document.data(),
+                    let sender = User(userDictionary: userDictionary) else { fatalError() }
+                completion(sender)
+            }
+        }
     }
     
     
@@ -39,8 +86,6 @@ class MyInboxTableViewCell: UITableViewCell {
     // MARK: - UI Lifecycle
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

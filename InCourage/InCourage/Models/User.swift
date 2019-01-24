@@ -25,9 +25,9 @@ class User {
     var reminderGramOutboxIDs: [String]
     var totalReminderGramsSent: Int
     
-    var fullName: String {
-        return "\(firstName) \(lastName)"
-    }
+//    var fullName: String {
+//        return "\(firstName) \(lastName)"
+//    }
     
 //    var FBSearchDictionary: [String] {
 //        var characters = ""
@@ -131,11 +131,11 @@ extension User {
             let lifePerspective = userDictionary[UserKey.lifePerspective] as? String,
             let loveRating = userDictionary[UserKey.loveRating] as? Int,
             let totalReminderGramsSent = userDictionary[UserKey.totalReminderGramsSent] as? Int else { return nil }
+        
         var reminderGramInboxIDs = [String]()
         if let inboxIDs = userDictionary[UserKey.reminderGramInboxIDs] as? [String] {
             reminderGramInboxIDs.append(contentsOf: inboxIDs)
         }
-        
         var reminderGramOutboxIDs = [String]()
         if let outboxIDs = userDictionary[UserKey.reminderGramOutboxIDs] as? [String] {
             reminderGramOutboxIDs.append(contentsOf: outboxIDs)

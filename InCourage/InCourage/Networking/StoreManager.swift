@@ -135,7 +135,7 @@ class StorageManager {
             }
             
             reminderGramImageStoragePath.downloadURL { (url, error) in
-                guard let url = url else {return}
+                guard let url = url else { return }
                 completion(url)
             }
         }
@@ -239,12 +239,12 @@ class StorageManager {
     }
     
     
-    func downloadReminderGramImages(folderPath:String, success:@escaping (_ image:UIImage) -> (),failure: @escaping (_ error:Error) -> ()) {
+    func downloadReminderGramImage(folderPath: String, success: @escaping (_ image: UIImage) -> (),failure: @escaping (_ error:Error) -> ()) {
         
         guard let reminderGram = reminderGram else { return }
         
         // Create a reference with an initial file path and name
-        let reference = Storage.storage().reference(withPath: "reminderGramImages").child("\(reminderGram.uid)").child("\(reminderGram.subject).png")
+        let reference = Storage.storage().reference(withPath: "reminderGramImages").child("\(reminderGram.uid).png")
         reference.getData(maxSize: (1 * 1024 * 1024)) { (data, error) in
             if let _error = error{
                 print(_error)

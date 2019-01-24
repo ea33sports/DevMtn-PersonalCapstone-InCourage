@@ -63,20 +63,20 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="06N-J4-yNK">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="profileIcon" translatesAutoresizingMaskIntoConstraints="NO" id="06N-J4-yNK">
                                         <rect key="frame" x="16" y="28" width="50" height="50"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Subject" textAlignment="center" lineBreakMode="clip" numberOfLines="0" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="zwm-0a-V5h">
                                         <rect key="frame" x="84" y="421" width="207" height="57"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                 </subviews>
                             </scrollView>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="00V-au-p9J">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="00V-au-p9J" userLabel="Love Rating Stepper View">
                                 <rect key="frame" x="0.0" y="569" width="375" height="98"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
@@ -104,6 +104,7 @@
                     <connections>
                         <outlet property="loveRatingLabel" destination="mNe-wK-N5c" id="vt9-gV-mhT"/>
                         <outlet property="loveRatingStepper" destination="mkW-MY-s98" id="eXi-Na-pkF"/>
+                        <outlet property="loveRatingView" destination="00V-au-p9J" id="YMZ-Gn-kNQ"/>
                         <outlet property="messageImage" destination="V16-bD-pgh" id="fex-S2-rNG"/>
                         <outlet property="messageTextView" destination="Lz1-LJ-rR2" id="Eu3-gF-G7m"/>
                         <outlet property="senderLabel" destination="rBS-lp-VnL" id="GRR-c9-IB1"/>
@@ -1360,6 +1361,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="yXi-wi-sAq"/>
         <segue reference="RkX-Lu-YvW"/>
-        <segue reference="cCe-Uh-SUF"/>
+        <segue reference="Cic-CW-2Gx"/>
     </inferredMetricsTieBreakers>
 </document>
