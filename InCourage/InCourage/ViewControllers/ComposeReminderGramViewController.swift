@@ -15,8 +15,7 @@ import FirebaseStorage
 class ComposeReminderGramViewController: UIViewController {
     
     // MARK: - Outlets
-    @IBOutlet weak var recipientTextField: UITextField!
-    @IBOutlet weak var recipientTableView: UITableView!
+    @IBOutlet weak var reminderGramPhotoContainer: UIView!
     @IBOutlet weak var reminderGramPhoto: UIImageView!
     @IBOutlet weak var subjectTextField: UITextField!
     @IBOutlet weak var reminderGramMessageTextView: UITextView!
@@ -25,20 +24,18 @@ class ComposeReminderGramViewController: UIViewController {
     
     // MARK: - Properties
     var reminderGram: ReminderGram?
-    let uid = UUID().uuidString
     var selectedPhoto: UIImage?
-    var usernameArray: [String] = []
-    var receiver: User?
-    var searching = false
-    var activeTextField = UITextField()
-    
-    var filteredUser: [User] = [] {
-        didSet{
-            DispatchQueue.main.async {
-                self.recipientTableView.reloadData()
-            }
-        }
-    }
+//    var usernameArray: [String] = []
+//    var receiver: User?
+//    var searching = false
+//
+//    var filteredUser: [User] = [] {
+//        didSet{
+//            DispatchQueue.main.async {
+//                self.recipientTableView.reloadData()
+//            }
+//        }
+//    }
     
     
     
@@ -54,25 +51,38 @@ class ComposeReminderGramViewController: UIViewController {
         super.viewWillAppear(animated)
         
         // addStateDidChangeListener
+        setUpUI()
         updateView()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        
-        // removeStateDidChangeListener
     }
     
     
     
     // MARK: - Functions
+    func setUpUI() {
+        
+        view.addVerticalGradientLayer(topColor: #colorLiteral(red: 0.4054282904, green: 0.6722337604, blue: 0.9481148124, alpha: 1), bottomColor: #colorLiteral(red: 0.8486813903, green: 0.935580194, blue: 0.9688618779, alpha: 1))
+        
+        reminderGramPhotoContainer.layer.borderWidth = 1
+        reminderGramPhotoContainer.layer.masksToBounds = false
+        reminderGramPhotoContainer.layer.borderColor = UIColor.clear.cgColor
+        reminderGramPhotoContainer.layer.cornerRadius = reminderGramPhotoContainer.frame.height / 8
+        reminderGramPhotoContainer.clipsToBounds = true
+        
+        reminderGramPhoto.layer.borderWidth = 1
+        reminderGramPhoto.layer.masksToBounds = false
+        reminderGramPhoto.layer.borderColor = UIColor.clear.cgColor
+        reminderGramPhoto.layer.cornerRadius = reminderGramPhoto.frame.height / 8
+        reminderGramPhoto.clipsToBounds = true
+    }
+    
+    
     func updateView() {
-        recipientTextField.delegate = self
-        recipientTextField.clearButtonMode = .always
-        recipientTableView.delegate = self
-        recipientTableView.dataSource = self
-        recipientTableView.keyboardDismissMode = .onDrag
-        recipientTableView.isHidden = true
+//        recipientTextField.delegate = self
+//        recipientTextField.clearButtonMode = .always
+//        recipientTableView.delegate = self
+//        recipientTableView.dataSource = self
+//        recipientTableView.keyboardDismissMode = .onDrag
+//        recipientTableView.isHidden = true
         reminderGramPhoto.image = selectedPhoto
         subjectTextField.delegate = self
         reminderGramMessageTextView.delegate = self
@@ -82,45 +92,52 @@ class ComposeReminderGramViewController: UIViewController {
     
     
     @objc func adjustForKeyboard(notification: Notification) {
-        
+
         guard let userInfo = notification.userInfo,
             let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
         let keyboardFrame = keyboardSize.cgRectValue
-        
-        if view.frame.origin.y == 0 && recipientTextField != activeTextField {
-            view.frame.origin.y -= keyboardFrame.height
-        } else if view.frame.origin.y != 0 && recipientTextField != activeTextField {
-            view.frame.origin.y = 0
+
+        if view.frame.origin.y == 0 {
+            UIView.animate(withDuration: 0.5) {
+                self.view.frame.origin.y -= keyboardFrame.height
+                self.view.layoutIfNeeded()
+            }
+            
+        } else if view.frame.origin.y != 0 {
+            UIView.animate(withDuration: 0.5) {
+                self.view.frame.origin.y = 0
+                self.view.layoutIfNeeded()
+            }
         }
     }
     
     
-    func uploadReminderGramImage(_ image: UIImage, completion: @escaping (URL?) -> Void) {
-        
-        guard let data = image.jpegData(compressionQuality: 0.4) else { fatalError() }
-        let metaData = StorageMetadata()
-        metaData.contentType = "image/jpeg"
-        
-        let reminderGramImageStoragePath = Storage.storage().reference(withPath: "reminderGramImages").child("\(uid).png")
-        
-        reminderGramImageStoragePath.putData(data, metadata: metaData) { (_, error) in
-            
-            if let error = error {
-                print(error)
-                completion(nil)
-                return
-            }
-            
-            reminderGramImageStoragePath.downloadURL { (url, error) in
-                if let error = error {
-                    print("🙇🏽‍♀️\(error) \(error.localizedDescription)")
-                    completion(nil)
-                }
-                guard let url = url else { fatalError() }
-                completion(url)
-            }
-        }
-    }
+//    func uploadReminderGramImage(_ image: UIImage, completion: @escaping (URL?) -> Void) {
+//
+//        guard let data = image.jpegData(compressionQuality: 0.4) else { fatalError() }
+//        let metaData = StorageMetadata()
+//        metaData.contentType = "image/jpeg"
+//
+//        let reminderGramImageStoragePath = Storage.storage().reference(withPath: "reminderGramImages").child("\(uid).png")
+//
+//        reminderGramImageStoragePath.putData(data, metadata: metaData) { (_, error) in
+//
+//            if let error = error {
+//                print(error)
+//                completion(nil)
+//                return
+//            }
+//
+//            reminderGramImageStoragePath.downloadURL { (url, error) in
+//                if let error = error {
+//                    print("🙇🏽‍♀️\(error) \(error.localizedDescription)")
+//                    completion(nil)
+//                }
+//                guard let url = url else { fatalError() }
+//                completion(url)
+//            }
+//        }
+//    }
     
     
 //    func saveReminderGram(_ reminderGram: ReminderGram) {
@@ -171,19 +188,19 @@ class ComposeReminderGramViewController: UIViewController {
 //        }
 //    }
     
-    func saveReminderGram(reminderGram: ReminderGram, completion: @escaping (Bool) -> ()) {
-        let dataToSave = reminderGram.firebaseDictionary
-        let ref = Endpoint.database.collection("reminderGrams").document(reminderGram.uid)
-        ref.setData(dataToSave, completion: { (error) in
-            if let error = error {
-                print("***Error Saving ReminderGram \(error) \(error.localizedDescription)")
-                completion(false)
-            } else {
-                print("^^^Successfully saved ReminderGram!! UID: \(reminderGram.uid)")
-                completion(true)
-            }
-        })
-    }
+//    func saveReminderGram(reminderGram: ReminderGram, completion: @escaping (Bool) -> ()) {
+//        let dataToSave = reminderGram.firebaseDictionary
+//        let ref = Endpoint.database.collection("reminderGrams").document(reminderGram.uid)
+//        ref.setData(dataToSave, completion: { (error) in
+//            if let error = error {
+//                print("***Error Saving ReminderGram \(error) \(error.localizedDescription)")
+//                completion(false)
+//            } else {
+//                print("^^^Successfully saved ReminderGram!! UID: \(reminderGram.uid)")
+//                completion(true)
+//            }
+//        })
+//    }
 
     
     
@@ -195,27 +212,27 @@ class ComposeReminderGramViewController: UIViewController {
     
     @IBAction func recipeintTextFieldEditingDidChange(_ sender: UITextField) {
         
-        if let searchText = recipientTextField.text, !searchText.isEmpty {
-            
-            filteredUser.removeAll()
-            recipientTableView.isHidden = false
-            
-            let trimmedSearchText = searchText.trimmingCharacters(in: .whitespaces)
-            
-            Endpoint.database.collection("users").whereField("username", isEqualTo: trimmedSearchText.lowercased()).getDocuments { (snapshot, error) in
-                guard let docs = snapshot?.documents else { return }
-                if let error = error {
-                    print("Error fetching users \(error) \(error.localizedDescription)")
-                } else {
-                    for doc in docs {
-                        guard let user = User(userDictionary: doc.data()) else { fatalError() }
-                        self.filteredUser.append(user)
-                        print(searchText)
-                        print(user.username)
-                    }
-                }
-            }
-            
+//        if let searchText = recipientTextField.text, !searchText.isEmpty {
+//
+//            filteredUser.removeAll()
+//            recipientTableView.isHidden = false
+//
+//            let trimmedSearchText = searchText.trimmingCharacters(in: .whitespaces)
+//
+//            Endpoint.database.collection("users").whereField("username", isEqualTo: trimmedSearchText.lowercased()).getDocuments { (snapshot, error) in
+//                guard let docs = snapshot?.documents else { return }
+//                if let error = error {
+//                    print("Error fetching users \(error) \(error.localizedDescription)")
+//                } else {
+//                    for doc in docs {
+//                        guard let user = User(userDictionary: doc.data()) else { fatalError() }
+//                        self.filteredUser.append(user)
+//                        print(searchText)
+//                        print(user.username)
+//                    }
+//                }
+//            }
+        
 //            Endpoint.database.collection("users").whereField("FBSearchDictionary", arrayContains: trimmedSearchText.lowercased()).getDocuments { (snapshot, error) in
 //                guard let docs = snapshot?.documents else { return }
 //                if let error = error {
@@ -232,10 +249,10 @@ class ComposeReminderGramViewController: UIViewController {
 //                }
 //            }
             
-        } else {
-            searching = false
-            recipientTableView.isHidden = true
-        }
+//        } else {
+//            searching = false
+//            recipientTableView.isHidden = true
+//        }
     }
     
     
@@ -245,52 +262,55 @@ class ComposeReminderGramViewController: UIViewController {
     
     @IBAction func sendButtonTapped(_ sender: UIButton) {
         
-        guard let sender = UserController.shared.currentUser,
-            let receiver = receiver,
-            let image = reminderGramPhoto.image,
-            let subject = subjectTextField.text,
-            let message = reminderGramMessageTextView.text,
-            recipientTextField.text != nil else { return }
+        let uid = UUID().uuidString
         
-        uploadReminderGramImage(image) { (url) in
-            guard let url = url else { fatalError() }
-            self.reminderGram = ReminderGram(uid: self.uid, sender: sender.uid, receiver: receiver.uid, image: url.absoluteString, subject: subject, message: message)
-            
-//            guard let reminderGram = self.reminderGram else { return }
-            sender.reminderGramOutboxIDs.append(self.reminderGram!.uid)
-            receiver.reminderGramInboxIDs.append(self.reminderGram!.uid)
-            sender.totalReminderGramsSent += 1
-
-            print("🐝\(String(describing: sender.reminderGramOutboxIDs.last))")
-            print("🦅\(String(describing: sender.totalReminderGramsSent))")
-            print("🌯\(String(describing: receiver.reminderGramInboxIDs.last))")
-            
-            self.saveReminderGram(reminderGram: self.reminderGram!, completion: { (success) in
-                
-                print("🍣\(String(describing: sender.reminderGramOutboxIDs.last))")
-                print("🍼\(String(describing: receiver.reminderGramInboxIDs.last))")
-                
-                if success {
-                    Endpoint.database.collection("users").document(sender.uid).updateData(["reminderGramOutboxIDs" : sender.reminderGramOutboxIDs])
-                    Endpoint.database.collection("users").document(receiver.uid).updateData(["reminderGramInboxIDs" : receiver.reminderGramInboxIDs])
-                    Endpoint.database.collection("users").document(sender.uid).updateData(["totalReminderGramsSent" : sender.totalReminderGramsSent])
-                    print("SUCCESS!!!")
-                } else {
-                    print("👓 Couldn't save data")
-                }
-            })
-        }
+        guard let image = reminderGramPhoto.image,
+            let subject = subjectTextField.text,
+            let message = reminderGramMessageTextView.text else { return }
+        
+        ReminderGramController.shared.createReminderGram(uid: uid, image: image, subject: subject, message: message)
         self.dismiss(animated: true, completion: nil)
+        
+        
+        
+//        uploadReminderGramImage(image) { (url) in
+//            guard let url = url else { fatalError() }
+//            self.reminderGram = ReminderGram(uid: self.uid, sender: sender.uid, receiver: receiver.uid, image: url.absoluteString, subject: subject, message: message)
+//
+////            guard let reminderGram = self.reminderGram else { return }
+//            sender.reminderGramOutboxIDs.append(self.reminderGram!.uid)
+//            receiver.reminderGramInboxIDs.append(self.reminderGram!.uid)
+//            sender.totalReminderGramsSent += 1
+//
+//            print("🐝\(String(describing: sender.reminderGramOutboxIDs.last))")
+//            print("🦅\(String(describing: sender.totalReminderGramsSent))")
+//            print("🌯\(String(describing: receiver.reminderGramInboxIDs.last))")
+//
+//            self.saveReminderGram(reminderGram: self.reminderGram!, completion: { (success) in
+//
+//                print("🍣\(String(describing: sender.reminderGramOutboxIDs.last))")
+//                print("🍼\(String(describing: receiver.reminderGramInboxIDs.last))")
+//
+//                if success {
+//                    Endpoint.database.collection("users").document(sender.uid).updateData(["reminderGramOutboxIDs" : sender.reminderGramOutboxIDs])
+//                    Endpoint.database.collection("users").document(receiver.uid).updateData(["reminderGramInboxIDs" : receiver.reminderGramInboxIDs])
+//                    Endpoint.database.collection("users").document(sender.uid).updateData(["totalReminderGramsSent" : sender.totalReminderGramsSent])
+//                    print("SUCCESS!!!")
+//                } else {
+//                    print("👓 Couldn't save data")
+//                }
+//            })
+//        }
     }
 }
 
 
 
-extension ComposeReminderGramViewController: UITextFieldDelegate, UITextViewDelegate, UITableViewDelegate, UITableViewDataSource {
+extension ComposeReminderGramViewController: UITextFieldDelegate, UITextViewDelegate {
     
     // MARK: - UITextField Delegates
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        activeTextField = textField
+        view.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
     }
     
     
@@ -327,28 +347,28 @@ extension ComposeReminderGramViewController: UITextFieldDelegate, UITextViewDele
     
     
     // MARK: - UITableView DataSource
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filteredUser.count
-    }
-    
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = recipientTableView.dequeueReusableCell(withIdentifier: "recipientCell", for: indexPath)
-        
-        // Configure the cell
-        let filteredDataItem = filteredUser[indexPath.row].username
-        cell.textLabel?.text = filteredDataItem
-        
-        return cell
-    }
-    
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        receiver = filteredUser[indexPath.row]
-        recipientTextField.text = receiver?.username
-        recipientTableView.isHidden = true
-        recipientTextField.resignFirstResponder()
-    }
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//        return filteredUser.count
+//    }
+//
+//
+//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = recipientTableView.dequeueReusableCell(withIdentifier: "recipientCell", for: indexPath)
+//
+//        // Configure the cell
+//        let filteredDataItem = filteredUser[indexPath.row].username
+//        cell.textLabel?.text = filteredDataItem
+//
+//        return cell
+//    }
+//
+//
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        receiver = filteredUser[indexPath.row]
+//        recipientTextField.text = receiver?.username
+//        recipientTableView.isHidden = true
+//        recipientTextField.resignFirstResponder()
+//    }
 }
 
 

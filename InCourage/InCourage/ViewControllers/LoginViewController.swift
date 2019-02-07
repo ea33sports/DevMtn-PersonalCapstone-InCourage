@@ -31,36 +31,40 @@ class LoginViewController: UIViewController {
     // MARK: - Actions
     @IBAction func forgotPasswordButtonTapped(_ sender: UIButton) {
     }
+    
+    
     @IBAction func loginButtonTapped(_ sender: UIButton) {
         
-        guard let email = emailTextField.text,
-            let password = passwordTextField.text else { return }
-        
-        let trimmedEmail = email.trimmingCharacters(in: .whitespaces)
-        
-        Endpoint.auth.signIn(withEmail: trimmedEmail, password: password) { (authDataResult, error) in
-            if let error = error {
-                print("Error signing in user: \(#function) \(error) \(error.localizedDescription)")
-                return
-            }
-            
-            if let user = authDataResult?.user {
-                Endpoint.database.collection("users").document(user.uid).getDocument(completion: { (snapshot, error) in
-                    if let error = error {
-                        print("🎩 Error fetching current user \(error) \(error.localizedDescription)")
-                    }
-                    
-                    if let document = snapshot?.data() {
-                        let currentUser = User(userDictionary: document)
-                        UserController.shared.currentUser = currentUser
-                        UserController.shared.isUserLoggedIn = true
-                        print("🍁 email: \(currentUser?.email) username: \(currentUser?.username)")
-                    }
-                })
-            }
-            print("successful Sign-in")
-        }
+//        guard let email = emailTextField.text,
+//            let password = passwordTextField.text else { return }
+//
+//        let trimmedEmail = email.trimmingCharacters(in: .whitespaces)
+//
+//        Endpoint.auth.signIn(withEmail: trimmedEmail, password: password) { (authDataResult, error) in
+//            if let error = error {
+//                print("Error signing in user: \(#function) \(error) \(error.localizedDescription)")
+//                return
+//            }
+//
+//            if let user = authDataResult?.user {
+//                Endpoint.database.collection("users").document(user.uid).getDocument(completion: { (snapshot, error) in
+//                    if let error = error {
+//                        print("🎩 Error fetching current user \(error) \(error.localizedDescription)")
+//                    }
+//
+//                    if let document = snapshot?.data() {
+//                        let currentUser = User(userDictionary: document)
+//                        ProfileController.shared.currentProfile = currentUser
+//                        ProfileController.shared.isUserLoggedIn = true
+//                        print("🍁 email: \(currentUser?.email) username: \(currentUser?.username)")
+//                    }
+//                })
+//            }
+//            print("successful Sign-in")
+//        }
     }
+    
+    
     @IBAction func createAccountButtonTapped(_ sender: UIButton) {
         performSegue(withIdentifier: "loginToCreateAccountVC", sender: self)
     }

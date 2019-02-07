@@ -37,9 +37,9 @@ class MyOutboxTableViewCell: UITableViewCell {
             print(error, error.localizedDescription)
         }
         
-        fetchReceiver { (receiver) in
-            self.receiverNameLabel.text = "To: \(receiver.username)"
-        }
+//        fetchReceiver { (receiver) in
+//            self.receiverNameLabel.text = "To: \(receiver.username)"
+//        }
         
         messageSubjectLabel.text = reminderGram.subject
         messageLoveRatingLabel.text = "❤️\(reminderGram.loveRating)"
@@ -66,22 +66,22 @@ class MyOutboxTableViewCell: UITableViewCell {
     }
     
     
-    func fetchReceiver(completion: @escaping (User) -> Void) {
-        
-        guard let reminderGram = reminderGram else { return }
-        Endpoint.database.collection("users").document(reminderGram.receiver).getDocument { (snapshot, error) in
-            
-            if let error = error {
-                print("😤 Error getting user \(error) \(error.localizedDescription)")
-            }
-            
-            if let document = snapshot {
-                guard let userDictionary = document.data(),
-                    let receiver = User(userDictionary: userDictionary) else { fatalError() }
-                completion(receiver)
-            }
-        }
-    }
+//    func fetchReceiver(completion: @escaping (User) -> Void) {
+//
+//        guard let reminderGram = reminderGram else { return }
+//        Endpoint.database.collection("users").document(reminderGram.receiver).getDocument { (snapshot, error) in
+//
+//            if let error = error {
+//                print("😤 Error getting user \(error) \(error.localizedDescription)")
+//            }
+//
+//            if let document = snapshot {
+//                guard let userDictionary = document.data(),
+//                    let receiver = User(userDictionary: userDictionary) else { fatalError() }
+//                completion(receiver)
+//            }
+//        }
+//    }
     
     
     // MARK: - UI Lifecycle

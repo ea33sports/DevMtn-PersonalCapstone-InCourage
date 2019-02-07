@@ -8,8 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		057016EB0AD4558FF8DE1384 /* Pods_InCourageUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 752BB2073D0773E37DC2FA53 /* Pods_InCourageUITests.framework */; };
+		380280A221FD7D4F0064D6A1 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 380280A121FD7D4F0064D6A1 /* Profile.swift */; };
+		380431E22204FD2F00C341D8 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 380431E12204FD2F00C341D8 /* Extensions.swift */; };
 		3806E27B218A34C8007397B7 /* MessageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3806E27A218A34C8007397B7 /* MessageDetailViewController.swift */; };
-		38132DB2219A17170099B038 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38132DB1219A17170099B038 /* StoreKit.framework */; };
 		38132DB4219B82160099B038 /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38132DB3219B82160099B038 /* CreateAccountViewController.swift */; };
 		38132DB6219B82240099B038 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38132DB5219B82240099B038 /* LoginViewController.swift */; };
 		38132DB8219B82390099B038 /* ResetPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38132DB7219B82390099B038 /* ResetPasswordViewController.swift */; };
@@ -20,7 +21,6 @@
 		3824AD4C21E6D4E30017C550 /* MyOutboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3824AD4B21E6D4E30017C550 /* MyOutboxTableViewCell.swift */; };
 		3835519A2188FEDE007A453D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383551992188FEDE007A453D /* AppDelegate.swift */; };
 		3835519F2188FEDE007A453D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3835519D2188FEDE007A453D /* Main.storyboard */; };
-		383551A12188FEE0007A453D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 383551A02188FEE0007A453D /* Assets.xcassets */; };
 		383551A42188FEE0007A453D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 383551A22188FEE0007A453D /* LaunchScreen.storyboard */; };
 		383551AF2188FEE0007A453D /* InCourageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383551AE2188FEE0007A453D /* InCourageTests.swift */; };
 		383551BA2188FEE0007A453D /* InCourageUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383551B92188FEE0007A453D /* InCourageUITests.swift */; };
@@ -29,15 +29,17 @@
 		383551D2218903CD007A453D /* ReminderGram.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383551D1218903CD007A453D /* ReminderGram.swift */; };
 		383551D5218903EC007A453D /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383551D4218903EC007A453D /* User.swift */; };
 		383551D8218904EB007A453D /* ReminderGramController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383551D7218904EB007A453D /* ReminderGramController.swift */; };
-		383551DA218904F6007A453D /* UserController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383551D9218904F6007A453D /* UserController.swift */; };
+		383551DA218904F6007A453D /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383551D9218904F6007A453D /* ProfileController.swift */; };
 		383551DC21890D72007A453D /* ComposeReminderGramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383551DB21890D72007A453D /* ComposeReminderGramViewController.swift */; };
 		38494997218A6C75007D3EA9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38494999218A6C75007D3EA9 /* Info.plist */; };
 		3849499B218A6C9A007D3EA9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38494999218A6C75007D3EA9 /* Info.plist */; };
 		3849499C218A6C9B007D3EA9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38494999218A6C75007D3EA9 /* Info.plist */; };
-		3891F95C2190EFEE001D60D2 /* MyInboxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3891F95B2190EFEE001D60D2 /* MyInboxTableViewCell.swift */; };
+		38501FAD2206D97D00C3D306 /* CameraSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38501FAC2206D97D00C3D306 /* CameraSetup.swift */; };
+		3891F95C2190EFEE001D60D2 /* MyReminderGramsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3891F95B2190EFEE001D60D2 /* MyReminderGramsTableViewCell.swift */; };
 		3891F95F219106EC001D60D2 /* MockReminderGrams.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3891F95E219106EC001D60D2 /* MockReminderGrams.swift */; };
 		3891F961219106F6001D60D2 /* MockUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3891F960219106F6001D60D2 /* MockUsers.swift */; };
 		3891F9632192818E001D60D2 /* SearchReminderGramsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3891F9622192818E001D60D2 /* SearchReminderGramsCollectionViewCell.swift */; };
+		38CA2C2922092F7700136B93 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38CA2C2822092F7600136B93 /* Assets.xcassets */; };
 		38F296532194F5840044F4C8 /* SearchReminderGramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F296522194F5840044F4C8 /* SearchReminderGramViewController.swift */; };
 		38F296562194FEFB0044F4C8 /* SearchReminderGramLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F296552194FEFB0044F4C8 /* SearchReminderGramLayout.swift */; };
 		38F2965821961C790044F4C8 /* TemplateReminderGramDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F2965721961C790044F4C8 /* TemplateReminderGramDictionary.swift */; };
@@ -65,8 +67,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		380280A121FD7D4F0064D6A1 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		380431E12204FD2F00C341D8 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		3806E27A218A34C8007397B7 /* MessageDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageDetailViewController.swift; sourceTree = "<group>"; };
-		38132DB1219A17170099B038 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		38132DB3219B82160099B038 /* CreateAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAccountViewController.swift; sourceTree = "<group>"; };
 		38132DB5219B82240099B038 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		38132DB7219B82390099B038 /* ResetPasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResetPasswordViewController.swift; sourceTree = "<group>"; };
@@ -79,7 +82,6 @@
 		383551962188FEDE007A453D /* InCourage.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = InCourage.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		383551992188FEDE007A453D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3835519E2188FEDE007A453D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		383551A02188FEE0007A453D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		383551A32188FEE0007A453D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		383551AA2188FEE0007A453D /* InCourageTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = InCourageTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		383551AE2188FEE0007A453D /* InCourageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InCourageTests.swift; sourceTree = "<group>"; };
@@ -92,14 +94,16 @@
 		383551D1218903CD007A453D /* ReminderGram.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderGram.swift; sourceTree = "<group>"; };
 		383551D4218903EC007A453D /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		383551D7218904EB007A453D /* ReminderGramController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderGramController.swift; sourceTree = "<group>"; };
-		383551D9218904F6007A453D /* UserController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserController.swift; sourceTree = "<group>"; };
+		383551D9218904F6007A453D /* ProfileController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileController.swift; sourceTree = "<group>"; };
 		383551DB21890D72007A453D /* ComposeReminderGramViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeReminderGramViewController.swift; sourceTree = "<group>"; };
 		38494998218A6C75007D3EA9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Base; path = Base.lproj/Info.plist; sourceTree = "<group>"; };
 		3849499A218A6C99007D3EA9 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = en; path = en.lproj/Info.plist; sourceTree = "<group>"; };
-		3891F95B2190EFEE001D60D2 /* MyInboxTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyInboxTableViewCell.swift; sourceTree = "<group>"; };
+		38501FAC2206D97D00C3D306 /* CameraSetup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraSetup.swift; sourceTree = "<group>"; };
+		3891F95B2190EFEE001D60D2 /* MyReminderGramsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyReminderGramsTableViewCell.swift; sourceTree = "<group>"; };
 		3891F95E219106EC001D60D2 /* MockReminderGrams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockReminderGrams.swift; sourceTree = "<group>"; };
 		3891F960219106F6001D60D2 /* MockUsers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUsers.swift; sourceTree = "<group>"; };
 		3891F9622192818E001D60D2 /* SearchReminderGramsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReminderGramsCollectionViewCell.swift; sourceTree = "<group>"; };
+		38CA2C2822092F7600136B93 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		38F296522194F5840044F4C8 /* SearchReminderGramViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReminderGramViewController.swift; sourceTree = "<group>"; };
 		38F296552194FEFB0044F4C8 /* SearchReminderGramLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReminderGramLayout.swift; sourceTree = "<group>"; };
 		38F2965721961C790044F4C8 /* TemplateReminderGramDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateReminderGramDictionary.swift; sourceTree = "<group>"; };
@@ -122,7 +126,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F6A4C7B5B34E5E578BCB2801 /* Pods_InCourage.framework in Frameworks */,
-				38132DB2219A17170099B038 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -145,6 +148,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		380431E02204FD0D00C341D8 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				380431E12204FD2F00C341D8 /* Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		38132DB9219B89BB0099B038 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
@@ -189,6 +200,7 @@
 				383551D3218903D8007A453D /* Models */,
 				3891F95D2190EFF3001D60D2 /* Views */,
 				38F296542194FED00044F4C8 /* Layouts */,
+				380431E02204FD0D00C341D8 /* Extensions */,
 				383551C72188FF05007A453D /* Storyboards */,
 				383551C92188FF22007A453D /* Resources */,
 			);
@@ -227,7 +239,7 @@
 			children = (
 				38494999218A6C75007D3EA9 /* Info.plist */,
 				38F2965B2196802F0044F4C8 /* GoogleService-Info.plist */,
-				383551A02188FEE0007A453D /* Assets.xcassets */,
+				38CA2C2822092F7600136B93 /* Assets.xcassets */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -250,9 +262,11 @@
 		383551D3218903D8007A453D /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				383551D4218903EC007A453D /* User.swift */,
+				38501FAC2206D97D00C3D306 /* CameraSetup.swift */,
+				380280A121FD7D4F0064D6A1 /* Profile.swift */,
 				383551D1218903CD007A453D /* ReminderGram.swift */,
 				38F2965721961C790044F4C8 /* TemplateReminderGramDictionary.swift */,
+				383551D4218903EC007A453D /* User.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -260,7 +274,7 @@
 		383551D621890403007A453D /* ModelControllers */ = {
 			isa = PBXGroup;
 			children = (
-				383551D9218904F6007A453D /* UserController.swift */,
+				383551D9218904F6007A453D /* ProfileController.swift */,
 				383551D7218904EB007A453D /* ReminderGramController.swift */,
 				38F2965921961C880044F4C8 /* TemplateReminderGramController.swift */,
 				3891F960219106F6001D60D2 /* MockUsers.swift */,
@@ -272,7 +286,7 @@
 		3891F95D2190EFF3001D60D2 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				3891F95B2190EFEE001D60D2 /* MyInboxTableViewCell.swift */,
+				3891F95B2190EFEE001D60D2 /* MyReminderGramsTableViewCell.swift */,
 				3824AD4B21E6D4E30017C550 /* MyOutboxTableViewCell.swift */,
 				3891F9622192818E001D60D2 /* SearchReminderGramsCollectionViewCell.swift */,
 			);
@@ -303,7 +317,6 @@
 		6F08B324F7A688B07D980180 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				38132DB1219A17170099B038 /* StoreKit.framework */,
 				645B55D7F8ED1E71D6392B67 /* Pods_InCourage.framework */,
 				4CDD8891EB0C4A1162998896 /* Pods_InCourageTests.framework */,
 				752BB2073D0773E37DC2FA53 /* Pods_InCourageUITests.framework */,
@@ -385,10 +398,10 @@
 						CreatedOnToolsVersion = 10.0;
 						SystemCapabilities = {
 							com.apple.InAppPurchase = {
-								enabled = 1;
+								enabled = 0;
 							};
 							com.apple.Keychain = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -429,9 +442,9 @@
 			files = (
 				38494997218A6C75007D3EA9 /* Info.plist in Resources */,
 				383551A42188FEE0007A453D /* LaunchScreen.storyboard in Resources */,
-				383551A12188FEE0007A453D /* Assets.xcassets in Resources */,
 				3835519F2188FEDE007A453D /* Main.storyboard in Resources */,
 				38F2965C2196802F0044F4C8 /* GoogleService-Info.plist in Resources */,
+				38CA2C2922092F7700136B93 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -572,13 +585,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				383551D8218904EB007A453D /* ReminderGramController.swift in Sources */,
+				380431E22204FD2F00C341D8 /* Extensions.swift in Sources */,
 				38132DBB219B8A620099B038 /* AuthManager.swift in Sources */,
-				383551DA218904F6007A453D /* UserController.swift in Sources */,
+				383551DA218904F6007A453D /* ProfileController.swift in Sources */,
+				380280A221FD7D4F0064D6A1 /* Profile.swift in Sources */,
 				3891F9632192818E001D60D2 /* SearchReminderGramsCollectionViewCell.swift in Sources */,
 				3824AD4C21E6D4E30017C550 /* MyOutboxTableViewCell.swift in Sources */,
-				3891F95C2190EFEE001D60D2 /* MyInboxTableViewCell.swift in Sources */,
+				3891F95C2190EFEE001D60D2 /* MyReminderGramsTableViewCell.swift in Sources */,
 				38132DB6219B82240099B038 /* LoginViewController.swift in Sources */,
 				3891F95F219106EC001D60D2 /* MockReminderGrams.swift in Sources */,
+				38501FAD2206D97D00C3D306 /* CameraSetup.swift in Sources */,
 				38F2965A21961C880044F4C8 /* TemplateReminderGramController.swift in Sources */,
 				38132DB8219B82390099B038 /* ResetPasswordViewController.swift in Sources */,
 				38132DB4219B82160099B038 /* CreateAccountViewController.swift in Sources */,
@@ -782,7 +798,6 @@
 			baseConfigurationReference = 59EF344DDB2D713E75ACEB2E /* Pods-InCourage.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = InCourage/InCourage.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S2V96BB45E;
 				INFOPLIST_FILE = "$(SRCROOT)/InCourageUITests/Info.plist";
@@ -802,7 +817,6 @@
 			baseConfigurationReference = 9F34131D4FCD79412F0E48BE /* Pods-InCourage.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = InCourage/InCourage.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S2V96BB45E;
 				INFOPLIST_FILE = "$(SRCROOT)/InCourageUITests/Info.plist";

@@ -103,53 +103,53 @@ class CreateAccountViewController: UIViewController, UITextFieldDelegate {
     // MARK: - Actions
     @IBAction func createAccountButtonTapped(_ sender: UIButton) {
         
-        view.frame.origin.y = 0
-        
-        guard let firstName = firstNameTextField.text,
-            let lastName = lastNameTextField.text,
-            let email = emailTextField.text?.lowercased(),
-            let password = passwordTextField.text,
-            let username = usernameTextField.text?.lowercased()
-            else { return }
-        
-        let trimmedFirstName = firstName.trimmingCharacters(in: .whitespaces)
-        let trimmedLastName = lastName.trimmingCharacters(in: .whitespaces)
-        let trimmedEmail = email.trimmingCharacters(in: .whitespaces)
-        
-        Endpoint.auth.createUser(withEmail: trimmedEmail, password: password) { (authDataResult, error) in
-            if let error = error {
-                print("🎩 Error creating user: \(#function) \(error) \(error.localizedDescription)")
-                return
-            }
-            
-            if let user = authDataResult?.user {
-                let currentUser = User(uid: user.uid, email: user.email!, username: username, loggedIn: true, firstName: trimmedFirstName, lastName: trimmedLastName, isPrivate: false, profilePic: "", lifePerspective: "", loveRating: 0, reminderGramInboxIDs: [], reminderGramOutboxIDs: [], totalReminderGramsSent: 0)
-                Endpoint.database.collection("users").document(user.uid).setData(currentUser.firebaseDictionary)
-                
-                Endpoint.auth.signIn(withEmail: trimmedEmail, password: password) { (authDataResult, error) in
-                    if let error = error {
-                        print("Error signing in user: \(#function) \(error) \(error.localizedDescription)")
-                        return
-                    }
-                    
-                    if let user = authDataResult?.user {
-                        Endpoint.database.collection("users").document(user.uid).getDocument(completion: { (snapshot, error) in
-                            if let error = error {
-                                print("🎩 Error fetching current user \(error) \(error.localizedDescription)")
-                            }
-                            
-                            if let document = snapshot?.data() {
-                                let currentUser = User(userDictionary: document)
-                                UserController.shared.currentUser = currentUser
-                                UserController.shared.isUserLoggedIn = true
-                                print("🍁\(Auth.auth().currentUser?.email) 📧email: \(currentUser?.email) 📛username: \(currentUser?.username)")
-                            }
-                        })
-                    }
-                    print("successful Sign-in")
-                }
-            }
-        }
+//        view.frame.origin.y = 0
+//        
+//        guard let firstName = firstNameTextField.text,
+//            let lastName = lastNameTextField.text,
+//            let email = emailTextField.text?.lowercased(),
+//            let password = passwordTextField.text,
+//            let username = usernameTextField.text?.lowercased()
+//            else { return }
+//        
+//        let trimmedFirstName = firstName.trimmingCharacters(in: .whitespaces)
+//        let trimmedLastName = lastName.trimmingCharacters(in: .whitespaces)
+//        let trimmedEmail = email.trimmingCharacters(in: .whitespaces)
+//        
+//        Endpoint.auth.createUser(withEmail: trimmedEmail, password: password) { (authDataResult, error) in
+//            if let error = error {
+//                print("🎩 Error creating user: \(#function) \(error) \(error.localizedDescription)")
+//                return
+//            }
+//            
+//            if let user = authDataResult?.user {
+//                let currentUser = User(uid: user.uid, email: user.email!, username: username, loggedIn: true, firstName: trimmedFirstName, lastName: trimmedLastName, isPrivate: false, profilePic: "", lifePerspective: "", loveRating: 0, reminderGramInboxIDs: [], reminderGramOutboxIDs: [], totalReminderGramsSent: 0)
+//                Endpoint.database.collection("users").document(user.uid).setData(currentUser.firebaseDictionary)
+//                
+//                Endpoint.auth.signIn(withEmail: trimmedEmail, password: password) { (authDataResult, error) in
+//                    if let error = error {
+//                        print("Error signing in user: \(#function) \(error) \(error.localizedDescription)")
+//                        return
+//                    }
+//                    
+//                    if let user = authDataResult?.user {
+//                        Endpoint.database.collection("users").document(user.uid).getDocument(completion: { (snapshot, error) in
+//                            if let error = error {
+//                                print("🎩 Error fetching current user \(error) \(error.localizedDescription)")
+//                            }
+//                            
+//                            if let document = snapshot?.data() {
+//                                let currentUser = User(userDictionary: document)
+//                                ProfileController.shared.currentProfile = currentUser
+//                                ProfileController.shared.isUserLoggedIn = true
+//                                print("🍁\(Auth.auth().currentUser?.email) 📧email: \(currentUser?.email) 📛username: \(currentUser?.username)")
+//                            }
+//                        })
+//                    }
+//                    print("successful Sign-in")
+//                }
+//            }
+//        }
     }
     
     

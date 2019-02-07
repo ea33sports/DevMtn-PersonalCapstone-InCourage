@@ -13,19 +13,27 @@ import PromiseKit
 class ProfileTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate {
 
     // MARK: - Outlets
-    @IBOutlet weak var profileHeaderView: UIView!
     @IBOutlet weak var profileImageView: UIImageView!
-    @IBOutlet weak var myLoveRatingLabel: UILabel!
-    @IBOutlet weak var totalMessagesSentLabel: UILabel!
     @IBOutlet weak var whatIsLifeTextView: UITextView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
-    @IBOutlet weak var reminderGramSegmentedControl: UISegmentedControl!
+    
+    
+    
+    // MARK: - Initializers
+    static let shared = ProfileTableViewController()
     
     
     
     // MARK: - Variables
-    var inbox: [ReminderGram] = []
-    var outbox: [ReminderGram] = []
+    var reminderGrams: [ReminderGram] = []
+    
+    var hideTableViewView: UIView = {
+        let view = UIView()
+        view.backgroundColor = #colorLiteral(red: 0.8603317142, green: 0.8373681903, blue: 0.7913245559, alpha: 1)
+        return view
+    }()
+    
+    var hideHeight: CGFloat?
     
     
     
@@ -34,43 +42,44 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(updateReminderGrams), name: NSNotification.Name(rawValue: "load"), object: nil)
-        
+
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
         
-        setUPUI()
+        tableView.isUserInteractionEnabled = false
         setUpGestures()
         spinner.isHidden = true
-        updateView()
-        
-        guard let currentUser = UserController.shared.currentUser else { return }
-        fetchReminderGrams(ids: currentUser.reminderGramInboxIDs) { (inboxReminderGrams) in
-            self.inbox = inboxReminderGrams
-            self.inbox.sort(by: { $1.loveRating < $0.loveRating })
-            self.tableView.reloadData()
-        }
-        
-        fetchReminderGrams(ids: currentUser.reminderGramOutboxIDs) { (outboxReminderGrams) in
-            self.outbox = outboxReminderGrams
-            self.outbox.sort(by: { $1.loveRating < $0.loveRating })
-            self.tableView.reloadData()
-        }
+        whatIsLifeTextView.delegate = self
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
-        saveChanges()
+        setUPUI()
+        updateView()
     }
     
     
     
     // MARK: - Functions
     func setUPUI() {
-        profileHeaderView.layer.shadowColor = UIColor.black.cgColor
-        profileHeaderView.layer.shadowOpacity = 1
-        profileHeaderView.layer.shadowOffset = CGSize.zero
-        profileHeaderView.layer.shadowRadius = 2
+        
+        tableView.contentInset.top = -20
+        
+        guard let tableViewHeaderView = tableView.tableHeaderView else { fatalError() }
+        tableViewHeaderView.frame.size = CGSize(width: tableView.frame.width, height: 334)
+        
+        UIApplication.shared.statusBarView?.backgroundColor = .clear
+        
+        profileImageView.layer.borderWidth = 1
+        profileImageView.layer.masksToBounds = false
+        profileImageView.layer.borderColor = UIColor.black.cgColor
+        profileImageView.layer.cornerRadius = profileImageView.frame.height / 2
+        profileImageView.clipsToBounds = true
+        
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
+            self.hideTableViewView.alpha = 0
+        }, completion: nil)
     }
     
     
@@ -87,8 +96,9 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     
     func updateView() {
         
-        guard let currentUser = UserController.shared.currentUser,
-            let profilePic = UserController.shared.currentUser?.profilePic else { return }
+        guard let currentProfile = ProfileController.shared.currentProfile,
+            let profilePic = ProfileController.shared.currentProfile?.profilePic else { return }
+        
         
         if profilePic != "" {
             StorageManager.shared.downloadProfileImages(folderPath: "profileImages", success: { (image) in
@@ -98,66 +108,76 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
             }) { (error) in
                 print(error, error.localizedDescription)
             }
+        } else {
+            profileImageView.image = #imageLiteral(resourceName: "user-male")
         }
         
+        whatIsLifeTextView.text = currentProfile.lifePerspective
         
-        myLoveRatingLabel.text = "\(currentUser.loveRating)"
-        totalMessagesSentLabel.text = "\(currentUser.totalReminderGramsSent)"
-        whatIsLifeTextView.text = currentUser.lifePerspective
+        ReminderGramController.shared.fetchReminderGrams(ids: currentProfile.reminderGramIDs) { (reminderGrams) in
+            self.reminderGrams = reminderGrams.sorted(by: { $0.loveRating > $1.loveRating })
+            self.tableView.reloadData()
+            
+            self.hideHeight = CGFloat(reminderGrams.count) * 80
+            self.setupHideTableViewView()
+            self.tableView.isUserInteractionEnabled = true
+            
+            print("🛠 Successfully fetched reminderGrams!!")
+            print("🚴🏽‍♂️ \(self.reminderGrams.count)")
+        }
     }
     
     
     func clearView() {
         profileImageView.image = #imageLiteral(resourceName: "profileIcon")
-        myLoveRatingLabel.text = "❤️"
-        totalMessagesSentLabel.text = "0"
         whatIsLifeTextView.text = ""
-        inbox = []
-        outbox = []
         tableView.reloadData()
     }
     
     @objc func updateReminderGrams() {
-        inbox.sort(by: { $1.loveRating < $0.loveRating })
-        outbox.sort(by: { $1.loveRating < $0.loveRating })
-        tableView.reloadData()
+        
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
+            self.hideTableViewView.alpha = 0
+        }, completion: nil)
+        
+        updateView()
     }
     
     
-    func fetchUser() {
-        Endpoint.database.collection("users").document((UserController.shared.currentUser?.uid)!).getDocument { (snapshot, error) in
-            if let error = error {
-                print("😤 Error getting user \(error) \(error.localizedDescription)")
-            }
-            
-            if let documents = snapshot {
-                guard let userDictionary = documents.data() else { return }
-                UserController.shared.currentUser = User(userDictionary: userDictionary)
-            }
-        }
-    }
-    
-    
-    func fetchReminderGrams(ids: [String], completion: @escaping ([ReminderGram]) -> Void) {
-
-        Endpoint.database.collection("reminderGrams").getDocuments { (snapshot, error) in
-            if let error = error {
-                print("😤 Error getting reminderGrams \(error) \(error.localizedDescription)")
-            }
-
-            if let documents = snapshot {
-                let reminderGramDictionaries = documents.documents.map({ $0.data() })
-                let result = reminderGramDictionaries.map({ ReminderGram.init(reminderGramDictionary: $0) }).compactMap({ $0 }).filter({ ids.contains( ($0.uid) ) })
-                completion(result)
-            }
-        }
-    }
+//    func fetchUser() {
+//        Endpoint.database.collection("users").document((ProfileController.shared.currentProfile?.uid)!).getDocument { (snapshot, error) in
+//            if let error = error {
+//                print("😤 Error getting user \(error) \(error.localizedDescription)")
+//            }
+//            
+//            if let documents = snapshot {
+//                guard let profileDictionary = documents.data() else { return }
+//                ProfileController.shared.currentProfile = Profile(profileDictionary: profileDictionary)
+//            }
+//        }
+//    }
+//    
+//    
+//    func fetchReminderGrams(ids: [String], completion: @escaping ([ReminderGram]) -> Void) {
+//
+//        Endpoint.database.collection("reminderGrams").getDocuments { (snapshot, error) in
+//            if let error = error {
+//                print("😤 Error getting reminderGrams \(error) \(error.localizedDescription)")
+//            }
+//
+//            if let documents = snapshot {
+//                let reminderGramDictionaries = documents.documents.map({ $0.data() })
+//                let result = reminderGramDictionaries.map({ ReminderGram.init(reminderGramDictionary: $0) }).compactMap({ $0 }).filter({ ids.contains( ($0.uid) ) })
+//                completion(result)
+//            }
+//        }
+//    }
     
     
     func saveChanges() {
-        guard let currentUser = UserController.shared.currentUser else { return }
-        currentUser.lifePerspective = whatIsLifeTextView.text
-        Endpoint.database.collection("users").document(currentUser.uid).updateData(["lifePerspective" : currentUser.lifePerspective as Any])
+        guard let currentProfile = ProfileController.shared.currentProfile else { return }
+        currentProfile.lifePerspective = whatIsLifeTextView.text
+        Endpoint.database.collection("profiles").document(currentProfile.uid).updateData(["lifePerspective" : currentProfile.lifePerspective])
     }
     
     
@@ -181,14 +201,16 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         guard let chosenImage = info[.originalImage] as? UIImage else { return }//2
         profileImageView.image = chosenImage //4
         
-        guard let currentUser = UserController.shared.currentUser else { return }
+        guard let currentProfile = ProfileController.shared.currentProfile else { return }
         StorageManager.shared.uploadProfileImage(chosenImage) { (url) in
             if let url = url {
-                currentUser.profilePic = url.absoluteString
-                Endpoint.database.collection("users").document(currentUser.uid).updateData(["profilePic" : url.absoluteString], completion: { (errer) in
+                currentProfile.profilePic = url.absoluteString
+                Endpoint.database.collection("profiles").document(currentProfile.uid).updateData(["profilePic" : url.absoluteString], completion: { (errer) in
                     if let error = errer {
                          print(error)
                     }
+                    
+                    print("⚡︎ We have Image \(currentProfile.profilePic)")
                 })
             }
         }
@@ -207,99 +229,140 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     }
     
     
+    func textViewDidChange(_ textView: UITextView) {
+        saveChanges()
+    }
+    
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        
+        if (text == "\n") {
+            textView.resignFirstResponder()
+            return false
+        }
+        
+        let newText = (textView.text as NSString).replacingCharacters(in: range, with: text)
+        let numberOfChars = newText.count
+        return numberOfChars < 164
+    }
+    
+    
     @objc func dismissKeyboard(){
         whatIsLifeTextView.endEditing(true)
         tableView.isUserInteractionEnabled = true
+    }
+    
+    
+    fileprivate func setupHideTableViewView() {
+        
+        guard let header = tableView.tableHeaderView,
+            let hideHeight = hideHeight else { fatalError() }
+        
+        view.addSubview(hideTableViewView)
+        hideTableViewView.translatesAutoresizingMaskIntoConstraints = false
+        
+        hideTableViewView.topAnchor.constraint(equalTo: header.topAnchor, constant: 334).isActive = true
+        hideTableViewView.leftAnchor.constraint(equalTo: header.leftAnchor, constant: 0).isActive = true
+        hideTableViewView.rightAnchor.constraint(equalTo: header.rightAnchor, constant: 0).isActive = true
+        hideTableViewView.heightAnchor.constraint(equalToConstant: hideHeight).isActive = true
+        
+        hideTableViewView.updateConstraints()
+        hideTableViewView.layoutIfNeeded()
     }
 
     
     
     // MARK: - Actions
     @IBAction func backButtonTapped(_ sender: UIButton) {
-        self.dismiss(animated: true, completion: nil)
+        let transition: CATransition = CATransition()
+        transition.duration = 0.25
+        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+        transition.type = CATransitionType.push
+        transition.subtype = CATransitionSubtype.fromRight
+        view.window!.layer.add(transition, forKey: nil)
+        self.view.removeFromSuperview()
+        self.removeFromParent()
+        dismiss(animated: false, completion: nil)
+        
     }
     
     
-    @IBAction func menuButtonTapped(_ sender: UIButton) {
-        
-        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        let loginButton = UIAlertAction(title: "Log In", style: .default) { (action) in
-            // Present LoginVC
-            self.performSegue(withIdentifier: "inAppLogin", sender: self)
-        }
-        
-        let logoutButton = UIAlertAction(title: "Log Out", style: .default) { (action) in
-            do {
-                try Endpoint.auth.signOut()
-                UserController.shared.currentUser = nil
-                self.clearView()
-                print("Logged out. \(String(describing: Auth.auth().currentUser?.email))")
-            } catch {
-                print("Could not log out the user")
-            }
-            UserController.shared.isUserLoggedIn = false
-        }
-        
-        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-        
-        actionSheet.addAction(loginButton)
-        actionSheet.addAction(logoutButton)
-        actionSheet.addAction(cancelButton)
-        
-        present(actionSheet, animated: true)
-    }
+//    @IBAction func menuButtonTapped(_ sender: UIButton) {
+//
+//        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+//
+//        let loginButton = UIAlertAction(title: "Log In", style: .default) { (action) in
+//            // Present LoginVC
+//            self.performSegue(withIdentifier: "inAppLogin", sender: self)
+//        }
+//
+//        let logoutButton = UIAlertAction(title: "Log Out", style: .default) { (action) in
+//            do {
+//                try Endpoint.auth.signOut()
+//                ProfileController.shared.currentProfile = nil
+//                self.clearView()
+//                print("Logged out. \(String(describing: Auth.auth().currentUser?.email))")
+//            } catch {
+//                print("Could not log out the user")
+//            }
+//            ProfileController.shared.isUserLoggedIn = false
+//        }
+//
+//        let cancelButton = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+//
+//        actionSheet.addAction(loginButton)
+//        actionSheet.addAction(logoutButton)
+//        actionSheet.addAction(cancelButton)
+//
+//        present(actionSheet, animated: true)
+//    }
     
     
-    @IBAction func reminderGramSegmentedControllerChanged(_ sender: UISegmentedControl) {
-        tableView.reloadData()
-    }
+//    @IBAction func reminderGramSegmentedControllerChanged(_ sender: UISegmentedControl) {
+//        tableView.reloadData()
+//    }
 }
 
 
 
 extension ProfileTableViewController {
     
-    // MARK: - Table view data source
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        // #warning Incomplete implementation, return the number of sections
-        return 1
+    
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
     }
 
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        
-        var returnValue = 0
-        
-        if self.reminderGramSegmentedControl.selectedSegmentIndex == 0 {
-            returnValue = inbox.count
-        } else if self.reminderGramSegmentedControl.selectedSegmentIndex == 1 {
-            returnValue = outbox.count
-        }
-        
-        return returnValue
+        return reminderGrams.count
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         // Configure the cell...]
-        var cell = UITableViewCell()
-        
-        if self.reminderGramSegmentedControl.selectedSegmentIndex == 0 {
-            let inboxCell = tableView.dequeueReusableCell(withIdentifier: "inboxCell", for: indexPath) as? MyInboxTableViewCell
-            let reminderGramsReceived = inbox[indexPath.row]
-            inboxCell?.reminderGram = reminderGramsReceived
-            cell = inboxCell!
-        } else if self.reminderGramSegmentedControl.selectedSegmentIndex == 1 {
-            let outboxCell = tableView.dequeueReusableCell(withIdentifier: "outboxCell", for: indexPath) as? MyOutboxTableViewCell
-            let reminderGramsSent = outbox[indexPath.row]
-            outboxCell?.reminderGram = reminderGramsSent
-            cell = outboxCell!
-        }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "reminderGramCell", for: indexPath) as? MyReminderGramsTableViewCell else { return UITableViewCell() }
+        let reminderGram = reminderGrams[indexPath.row]
+        cell.reminderGram = reminderGram
         
         return cell
+        
+//        var cell = UITableViewCell()
+//
+//        if self.reminderGramSegmentedControl.selectedSegmentIndex == 0 {
+//            let inboxCell = tableView.dequeueReusableCell(withIdentifier: "inboxCell", for: indexPath) as? MyInboxTableViewCell
+//            let reminderGramsReceived = inbox[indexPath.row]
+//            inboxCell?.reminderGram = reminderGramsReceived
+//            cell = inboxCell!
+//        } else if self.reminderGramSegmentedControl.selectedSegmentIndex == 1 {
+//            let outboxCell = tableView.dequeueReusableCell(withIdentifier: "outboxCell", for: indexPath) as? MyOutboxTableViewCell
+//            let reminderGramsSent = outbox[indexPath.row]
+//            outboxCell?.reminderGram = reminderGramsSent
+//            cell = outboxCell!
+//        }
+//
+//        return cell
     }
 
     
@@ -314,9 +377,15 @@ extension ProfileTableViewController {
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
        if editingStyle == .delete {
             // Delete the row from the data source
-            let reminderGram = ReminderGramController.shared.reminderGrams[indexPath.row]
+            let reminderGram = reminderGrams[indexPath.row]
+            guard let index = reminderGrams.index(of: reminderGram) else { return }
+            reminderGrams.remove(at: index)
             ReminderGramController.shared.removeReminderGram(reminderGram: reminderGram)
+        
             tableView.deleteRows(at: [indexPath], with: .fade)
+        
+            hideTableViewView.updateConstraints()
+        
        } else if editingStyle == .insert {
             // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
        }
@@ -327,27 +396,39 @@ extension ProfileTableViewController {
     // MARK: - Navigation
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-    
-        if segue.identifier == "inboxToDetailVC" {
+        
+        if segue.identifier == "toDetailVC" {
+            
+            UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
+                self.hideTableViewView.alpha = 1
+            }, completion: nil)
+            
             let destinationVC = segue.destination as? MessageDetailViewController
             guard let indexPath = tableView.indexPathForSelectedRow else { return }
-            let reminderGram = inbox[indexPath.row]
+            let reminderGram = reminderGrams[indexPath.row]
             destinationVC?.reminderGram = reminderGram
-            destinationVC?.fetchSender(id: reminderGram.sender, completion: { (sender) in
-                destinationVC?.senderUser = sender
-                destinationVC?.loveRatingView.isHidden = false
-                destinationVC?.updateView()
-            })
-        } else if segue.identifier == "outboxToDetailVC" {
-            let destinationVC = segue.destination as? MessageDetailViewController
-            guard let indexPath = tableView.indexPathForSelectedRow else { return }
-            let reminderGram = outbox[indexPath.row]
-            destinationVC?.reminderGram = reminderGram
-            destinationVC?.fetchReceiver(id: reminderGram.receiver, completion: { (receiver) in
-                destinationVC?.receiverUser = receiver
-                destinationVC?.loveRatingView.isHidden = true
-                destinationVC?.updateView()
-            })
         }
+        
+//        if segue.identifier == "inboxToDetailVC" {
+//            let destinationVC = segue.destination as? MessageDetailViewController
+//            guard let indexPath = tableView.indexPathForSelectedRow else { return }
+//            let reminderGram = inbox[indexPath.row]
+//            destinationVC?.reminderGram = reminderGram
+//            destinationVC?.fetchSender(id: reminderGram.sender, completion: { (sender) in
+//                destinationVC?.senderUser = sender
+//                destinationVC?.loveRatingView.isHidden = false
+//                destinationVC?.updateView()
+//            })
+//        } else if segue.identifier == "outboxToDetailVC" {
+//            let destinationVC = segue.destination as? MessageDetailViewController
+//            guard let indexPath = tableView.indexPathForSelectedRow else { return }
+//            let reminderGram = outbox[indexPath.row]
+//            destinationVC?.reminderGram = reminderGram
+//            destinationVC?.fetchReceiver(id: reminderGram.receiver, completion: { (receiver) in
+//                destinationVC?.receiverUser = receiver
+//                destinationVC?.loveRatingView.isHidden = true
+//                destinationVC?.updateView()
+//            })
+//        }
     }
 }

@@ -9,11 +9,10 @@
 import UIKit
 import FirebaseStorage
 
-class MyInboxTableViewCell: UITableViewCell {
+class MyReminderGramsTableViewCell: UITableViewCell {
 
     // MARK: - Outlets
     @IBOutlet weak var messagePicImageView: UIImageView!
-    @IBOutlet weak var senderNameLabel: UILabel!
     @IBOutlet weak var messageSubjectLabel: UILabel!
     @IBOutlet weak var messageLoveRatingLabel: UILabel!
     
@@ -27,16 +26,24 @@ class MyInboxTableViewCell: UITableViewCell {
     
     
     // MARK: - Functions
+    func setUpUI() {
+        messagePicImageView.layer.borderWidth = 1
+        messagePicImageView.layer.masksToBounds = false
+        messagePicImageView.layer.borderColor = UIColor.black.cgColor
+        messagePicImageView.layer.cornerRadius = messagePicImageView.frame.height / 2
+        messagePicImageView.clipsToBounds = true
+    }
+    
+    
     func updateViews() {
+        
+        setUpUI()
+        
         guard let reminderGram = reminderGram else { return }
-        downloadReminderGramImage(folderPath: reminderGram.uid, success: { (image) in
+        downloadReminderGramImage(folderPath: "reminderGramImages", uid: reminderGram.uid, success: { (image) in
             self.messagePicImageView.image = image
         }) { (error) in
             print(error, error.localizedDescription)
-        }
-        
-        fetchSender { (sender) in
-            self.senderNameLabel.text = "From: \(sender.username)"
         }
         
         messageSubjectLabel.text = reminderGram.subject
@@ -44,12 +51,12 @@ class MyInboxTableViewCell: UITableViewCell {
     }
     
     
-    func downloadReminderGramImage(folderPath: String, success: @escaping (_ image: UIImage) -> (),failure: @escaping (_ error: Error) -> ()) {
+    func downloadReminderGramImage(folderPath: String, uid: String, success: @escaping (_ image: UIImage) -> (),failure: @escaping (_ error: Error) -> ()) {
         
-        guard let reminderGram = reminderGram else { return }
+        guard let currentProfile = ProfileController.shared.currentProfile else { return }
         
         // Create a reference with an initial file path and name
-        let reference = Storage.storage().reference(withPath: "reminderGramImages").child("\(reminderGram.uid).png")
+        let reference = Storage.storage().reference(withPath: folderPath).child(currentProfile.uid).child("\(uid).png")
         reference.getData(maxSize: (1 * 1024 * 1024)) { (data, error) in
             if let _error = error{
                 print(_error)
@@ -64,22 +71,22 @@ class MyInboxTableViewCell: UITableViewCell {
     }
     
     
-    func fetchSender(completion: @escaping (User) -> Void) {
-        
-        guard let reminderGram = reminderGram else { return }
-        Endpoint.database.collection("users").document(reminderGram.sender).getDocument { (snapshot, error) in
-            
-            if let error = error {
-                print("😤 Error getting user \(error) \(error.localizedDescription)")
-            }
-            
-            if let document = snapshot {
-                guard let userDictionary = document.data(),
-                    let sender = User(userDictionary: userDictionary) else { fatalError() }
-                completion(sender)
-            }
-        }
-    }
+//    func fetchSender(completion: @escaping (User) -> Void) {
+//
+//        guard let reminderGram = reminderGram else { return }
+//        Endpoint.database.collection("users").document(reminderGram.sender).getDocument { (snapshot, error) in
+//
+//            if let error = error {
+//                print("😤 Error getting user \(error) \(error.localizedDescription)")
+//            }
+//
+//            if let document = snapshot {
+//                guard let userDictionary = document.data(),
+//                    let sender = User(userDictionary: userDictionary) else { fatalError() }
+//                completion(sender)
+//            }
+//        }
+//    }
     
     
     
