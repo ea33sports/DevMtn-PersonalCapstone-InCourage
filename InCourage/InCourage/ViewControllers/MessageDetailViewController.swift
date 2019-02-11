@@ -34,10 +34,14 @@ class MessageDetailViewController: UIViewController, UITextFieldDelegate, UIText
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setUpUI()
         updateView()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        
+        setUpUI()
+    }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
@@ -66,9 +70,9 @@ class MessageDetailViewController: UIViewController, UITextFieldDelegate, UIText
         let rectShape = CAShapeLayer()
         rectShape.bounds = imageInfoBackgroundLayer.frame
         rectShape.position = imageInfoBackgroundLayer.center
-        rectShape.path = UIBezierPath(roundedRect: imageInfoBackgroundLayer.bounds, byRoundingCorners: [.bottomLeft, .bottomRight], cornerRadii: CGSize(width: (messageImage.frame.height / 8), height: (messageImage.frame.height / 8))).cgPath
-        self.imageInfoBackgroundLayer.layer.mask = rectShape
+        rectShape.path = UIBezierPath(roundedRect: imageInfoBackgroundLayer.bounds, byRoundingCorners: [.bottomLeft, .bottomRight], cornerRadii: CGSize(width: (imageInfoBackgroundLayer.frame.width / 8), height: (messageImage.frame.height / 8))).cgPath
 
+        imageInfoBackgroundLayer.layer.mask = rectShape
     }
     
     

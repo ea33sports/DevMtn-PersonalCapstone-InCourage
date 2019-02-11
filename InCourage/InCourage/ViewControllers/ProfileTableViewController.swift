@@ -8,28 +8,26 @@
 
 import UIKit
 import FirebaseAuth
-import PromiseKit
 
 class ProfileTableViewController: UITableViewController, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UITextViewDelegate {
 
     // MARK: - Outlets
+    @IBOutlet weak var profileHeaderView: UIView!
+    @IBOutlet weak var profileTitleLabel: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
     @IBOutlet weak var whatIsLifeTextView: UITextView!
     @IBOutlet weak var spinner: UIActivityIndicatorView!
     
     
     
-    // MARK: - Initializers
-    static let shared = ProfileTableViewController()
-    
-    
-    
     // MARK: - Variables
+    var statusBarHeight = UIApplication.shared.statusBarFrame.size.height
+    
     var reminderGrams: [ReminderGram] = []
     
     var hideTableViewView: UIView = {
         let view = UIView()
-        view.backgroundColor = #colorLiteral(red: 0.8603317142, green: 0.8373681903, blue: 0.7913245559, alpha: 1)
+        view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         return view
     }()
     
@@ -64,12 +62,13 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     // MARK: - Functions
     func setUPUI() {
         
-        tableView.contentInset.top = -20
-        
-        guard let tableViewHeaderView = tableView.tableHeaderView else { fatalError() }
-        tableViewHeaderView.frame.size = CGSize(width: tableView.frame.width, height: 334)
-        
         UIApplication.shared.statusBarView?.backgroundColor = .clear
+        tableView.contentInset.top = -statusBarHeight
+        
+        guard let tableViewHeaderView = tableView.tableHeaderView else { return }
+        tableViewHeaderView.frame.size = CGSize(width: tableView.frame.width, height: 334 + statusBarHeight)
+        
+        profileTitleLabel.topAnchor.constraint(equalTo: tableView.topAnchor, constant: statusBarHeight + 12).isActive = true
         
         profileImageView.layer.borderWidth = 1
         profileImageView.layer.masksToBounds = false
@@ -104,9 +103,10 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
             StorageManager.shared.downloadProfileImages(folderPath: "profileImages", success: { (image) in
                 DispatchQueue.main.async {
                     self.profileImageView.image = image
+//                    print("🌷 Got the image to load!")
                 }
             }) { (error) in
-                print(error, error.localizedDescription)
+//                print(error, error.localizedDescription)
             }
         } else {
             profileImageView.image = #imageLiteral(resourceName: "user-male")
@@ -122,8 +122,8 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
             self.setupHideTableViewView()
             self.tableView.isUserInteractionEnabled = true
             
-            print("🛠 Successfully fetched reminderGrams!!")
-            print("🚴🏽‍♂️ \(self.reminderGrams.count)")
+//            print("🛠 Successfully fetched reminderGrams!!")
+//            print("🚴🏽‍♂️ \(self.reminderGrams.count)")
         }
     }
     
@@ -199,18 +199,19 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         dismiss(animated: true, completion: nil)
         guard let chosenImage = info[.originalImage] as? UIImage else { return }//2
-        profileImageView.image = chosenImage //4
         
         guard let currentProfile = ProfileController.shared.currentProfile else { return }
         StorageManager.shared.uploadProfileImage(chosenImage) { (url) in
             if let url = url {
                 currentProfile.profilePic = url.absoluteString
                 Endpoint.database.collection("profiles").document(currentProfile.uid).updateData(["profilePic" : url.absoluteString], completion: { (errer) in
+                    
                     if let error = errer {
-                         print(error)
+                        print(error)
                     }
                     
-                    print("⚡︎ We have Image \(currentProfile.profilePic)")
+                    self.profileImageView.image = chosenImage //4
+//                    print("⚡︎ We have Image \(currentProfile.profilePic)")
                 })
             }
         }
@@ -248,6 +249,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     
     
     @objc func dismissKeyboard(){
+        saveChanges()
         whatIsLifeTextView.endEditing(true)
         tableView.isUserInteractionEnabled = true
     }
@@ -261,7 +263,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         view.addSubview(hideTableViewView)
         hideTableViewView.translatesAutoresizingMaskIntoConstraints = false
         
-        hideTableViewView.topAnchor.constraint(equalTo: header.topAnchor, constant: 334).isActive = true
+        hideTableViewView.topAnchor.constraint(equalTo: header.topAnchor, constant: (334 + statusBarHeight)).isActive = true
         hideTableViewView.leftAnchor.constraint(equalTo: header.leftAnchor, constant: 0).isActive = true
         hideTableViewView.rightAnchor.constraint(equalTo: header.rightAnchor, constant: 0).isActive = true
         hideTableViewView.heightAnchor.constraint(equalToConstant: hideHeight).isActive = true
@@ -283,7 +285,6 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         self.view.removeFromSuperview()
         self.removeFromParent()
         dismiss(animated: false, completion: nil)
-        
     }
     
     

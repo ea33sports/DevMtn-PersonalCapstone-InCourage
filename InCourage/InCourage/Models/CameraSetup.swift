@@ -24,7 +24,6 @@ class CameraSetup: NSObject {
     //camera preview layer
     var previewLayer: AVCaptureVideoPreviewLayer?
     var photoCaptureCompletionBlock: ((UIImage?, Error?) -> Void)?
-    
 }
 
 
@@ -37,13 +36,15 @@ extension CameraSetup {
             if d.position == .front{
                 frontCam = d
             }
+                
             else if d.position == .back {
                 rearCam = d
-                do{
+                do {
                     try rearCam?.lockForConfiguration()
                     rearCam?.focusMode = .continuousAutoFocus
                     rearCam?.unlockForConfiguration()
                 }
+                    
                 catch let error{
                     print(error)
                 }
@@ -54,12 +55,13 @@ extension CameraSetup {
     
     func configureCaptureInput() {
         currentCam = rearCam!
-        do{
+        do {
             captureInput = try AVCaptureDeviceInput(device: currentCam!)
-            if captureSession.canAddInput(captureInput!){
+            if captureSession.canAddInput(captureInput!) {
                 captureSession.addInput(captureInput!)
             }
         }
+            
         catch let error {
             print(error)
         }
@@ -72,6 +74,7 @@ extension CameraSetup {
         if captureSession.canAddOutput(captureOutput!) {
             captureSession.addOutput(captureOutput!)
         }
+        
         captureSession.startRunning()
     }
     
@@ -82,7 +85,7 @@ extension CameraSetup {
         previewLayer?.connection?.videoOrientation = .portrait
         
         view.layer.insertSublayer(previewLayer!, at: 0)
-        previewLayer?.frame = view.frame
+        previewLayer?.frame = UIScreen.main.bounds
     }
     
     
@@ -110,6 +113,7 @@ extension CameraSetup {
                 captureSession.addInput(captureInput!)
             }
         }
+            
         catch let error {
             print(error)
         }
@@ -129,6 +133,7 @@ extension CameraSetup: AVCapturePhotoCaptureDelegate {
             
         else if let data = photo.fileDataRepresentation(), let image = UIImage(data: data) {
             self.photoCaptureCompletionBlock?(image, nil)
+            i
         }
     }
 }

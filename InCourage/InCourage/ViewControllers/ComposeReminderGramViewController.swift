@@ -15,6 +15,7 @@ import FirebaseStorage
 class ComposeReminderGramViewController: UIViewController {
     
     // MARK: - Outlets
+    @IBOutlet weak var cancelButton: UIButton!
     @IBOutlet weak var reminderGramPhotoContainer: UIView!
     @IBOutlet weak var reminderGramPhoto: UIImageView!
     @IBOutlet weak var subjectTextField: UITextField!
@@ -23,6 +24,12 @@ class ComposeReminderGramViewController: UIViewController {
     
     
     // MARK: - Properties
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    var statusBarHeight = UIApplication.shared.statusBarFrame.size.height
+    
     var reminderGram: ReminderGram?
     var selectedPhoto: UIImage?
 //    var usernameArray: [String] = []
@@ -98,16 +105,12 @@ class ComposeReminderGramViewController: UIViewController {
         let keyboardFrame = keyboardSize.cgRectValue
 
         if view.frame.origin.y == 0 {
-            UIView.animate(withDuration: 0.5) {
-                self.view.frame.origin.y -= keyboardFrame.height
-                self.view.layoutIfNeeded()
-            }
+            view.frame.origin.y -= keyboardFrame.height
+            view.layoutIfNeeded()
             
         } else if view.frame.origin.y != 0 {
-            UIView.animate(withDuration: 0.5) {
-                self.view.frame.origin.y = 0
-                self.view.layoutIfNeeded()
-            }
+            view.frame.origin.y = 0
+            view.layoutIfNeeded()
         }
     }
     
@@ -316,31 +319,40 @@ extension ComposeReminderGramViewController: UITextFieldDelegate, UITextViewDele
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
+        view.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
         return true
     }
     
     
     func textViewDidBeginEditing(_ textView: UITextView) {
+        
         if reminderGramMessageTextView.textColor == UIColor.lightGray {
             reminderGramMessageTextView.text = nil
             reminderGramMessageTextView.textColor = UIColor.black
         }
+        
+        view.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
     }
     
     
     func textViewDidEndEditing(_ textView: UITextView) {
+        
         if reminderGramMessageTextView.text.isEmpty {
             reminderGramMessageTextView.text = "Enter your message..."
             reminderGramMessageTextView.textColor = UIColor.lightGray
         }
+        
+        view.topAnchor.constraint(equalTo: view.topAnchor, constant: 0).isActive = true
     }
     
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if (text == "\n") {
+            cancelButton.topAnchor.constraint(equalTo: view.topAnchor, constant: statusBarHeight + 8).isActive = true
             reminderGramMessageTextView.resignFirstResponder()
             return false
         }
+        
         return true
     }
     

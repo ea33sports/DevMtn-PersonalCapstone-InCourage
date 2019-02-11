@@ -31,7 +31,6 @@
 		383551D8218904EB007A453D /* ReminderGramController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383551D7218904EB007A453D /* ReminderGramController.swift */; };
 		383551DA218904F6007A453D /* ProfileController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383551D9218904F6007A453D /* ProfileController.swift */; };
 		383551DC21890D72007A453D /* ComposeReminderGramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 383551DB21890D72007A453D /* ComposeReminderGramViewController.swift */; };
-		38494997218A6C75007D3EA9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38494999218A6C75007D3EA9 /* Info.plist */; };
 		3849499B218A6C9A007D3EA9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38494999218A6C75007D3EA9 /* Info.plist */; };
 		3849499C218A6C9B007D3EA9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38494999218A6C75007D3EA9 /* Info.plist */; };
 		38501FAD2206D97D00C3D306 /* CameraSetup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38501FAC2206D97D00C3D306 /* CameraSetup.swift */; };
@@ -40,11 +39,11 @@
 		3891F961219106F6001D60D2 /* MockUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3891F960219106F6001D60D2 /* MockUsers.swift */; };
 		3891F9632192818E001D60D2 /* SearchReminderGramsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3891F9622192818E001D60D2 /* SearchReminderGramsCollectionViewCell.swift */; };
 		38CA2C2922092F7700136B93 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 38CA2C2822092F7600136B93 /* Assets.xcassets */; };
+		38ED24B8220BDD01004DBEC6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38BE65FD220BD89F003D3CCD /* GoogleService-Info.plist */; };
 		38F296532194F5840044F4C8 /* SearchReminderGramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F296522194F5840044F4C8 /* SearchReminderGramViewController.swift */; };
 		38F296562194FEFB0044F4C8 /* SearchReminderGramLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F296552194FEFB0044F4C8 /* SearchReminderGramLayout.swift */; };
 		38F2965821961C790044F4C8 /* TemplateReminderGramDictionary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F2965721961C790044F4C8 /* TemplateReminderGramDictionary.swift */; };
 		38F2965A21961C880044F4C8 /* TemplateReminderGramController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38F2965921961C880044F4C8 /* TemplateReminderGramController.swift */; };
-		38F2965C2196802F0044F4C8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 38F2965B2196802F0044F4C8 /* GoogleService-Info.plist */; };
 		91E95F13FB3F2467B4A1C274 /* Pods_InCourageTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4CDD8891EB0C4A1162998896 /* Pods_InCourageTests.framework */; };
 		F6A4C7B5B34E5E578BCB2801 /* Pods_InCourage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 645B55D7F8ED1E71D6392B67 /* Pods_InCourage.framework */; };
 /* End PBXBuildFile section */
@@ -103,12 +102,12 @@
 		3891F95E219106EC001D60D2 /* MockReminderGrams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockReminderGrams.swift; sourceTree = "<group>"; };
 		3891F960219106F6001D60D2 /* MockUsers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUsers.swift; sourceTree = "<group>"; };
 		3891F9622192818E001D60D2 /* SearchReminderGramsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReminderGramsCollectionViewCell.swift; sourceTree = "<group>"; };
+		38BE65FD220BD89F003D3CCD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		38CA2C2822092F7600136B93 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		38F296522194F5840044F4C8 /* SearchReminderGramViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReminderGramViewController.swift; sourceTree = "<group>"; };
 		38F296552194FEFB0044F4C8 /* SearchReminderGramLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchReminderGramLayout.swift; sourceTree = "<group>"; };
 		38F2965721961C790044F4C8 /* TemplateReminderGramDictionary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateReminderGramDictionary.swift; sourceTree = "<group>"; };
 		38F2965921961C880044F4C8 /* TemplateReminderGramController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemplateReminderGramController.swift; sourceTree = "<group>"; };
-		38F2965B2196802F0044F4C8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4CDD8891EB0C4A1162998896 /* Pods_InCourageTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_InCourageTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		59EF344DDB2D713E75ACEB2E /* Pods-InCourage.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InCourage.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InCourage/Pods-InCourage.debug.xcconfig"; sourceTree = "<group>"; };
 		5E9225557F41AD46165AC7B3 /* Pods-InCourageTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-InCourageTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-InCourageTests/Pods-InCourageTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -238,7 +237,7 @@
 			isa = PBXGroup;
 			children = (
 				38494999218A6C75007D3EA9 /* Info.plist */,
-				38F2965B2196802F0044F4C8 /* GoogleService-Info.plist */,
+				38BE65FD220BD89F003D3CCD /* GoogleService-Info.plist */,
 				38CA2C2822092F7600136B93 /* Assets.xcassets */,
 			);
 			path = Resources;
@@ -391,7 +390,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1000;
-				LastUpgradeCheck = 1000;
+				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Eric Andersen";
 				TargetAttributes = {
 					383551952188FEDE007A453D = {
@@ -403,15 +402,16 @@
 							com.apple.Keychain = {
 								enabled = 0;
 							};
+							com.apple.Push = {
+								enabled = 0;
+							};
 						};
 					};
 					383551A92188FEE0007A453D = {
 						CreatedOnToolsVersion = 10.0;
-						TestTargetID = 383551952188FEDE007A453D;
 					};
 					383551B42188FEE0007A453D = {
 						CreatedOnToolsVersion = 10.0;
-						TestTargetID = 383551952188FEDE007A453D;
 					};
 				};
 			};
@@ -440,10 +440,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				38494997218A6C75007D3EA9 /* Info.plist in Resources */,
 				383551A42188FEE0007A453D /* LaunchScreen.storyboard in Resources */,
 				3835519F2188FEDE007A453D /* Main.storyboard in Resources */,
-				38F2965C2196802F0044F4C8 /* GoogleService-Info.plist in Resources */,
+				38ED24B8220BDD01004DBEC6 /* GoogleService-Info.plist in Resources */,
 				38CA2C2922092F7700136B93 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -479,7 +478,6 @@
 				"${BUILT_PRODUCTS_DIR}/BoringSSL/openssl.framework",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
-				"${BUILT_PRODUCTS_DIR}/PromiseKit/PromiseKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC/GRPCClient.framework",
 				"${BUILT_PRODUCTS_DIR}/gRPC-C++/grpcpp.framework",
@@ -496,7 +494,6 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/openssl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PromiseKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GRPCClient.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/grpcpp.framework",
@@ -798,17 +795,18 @@
 			baseConfigurationReference = 59EF344DDB2D713E75ACEB2E /* Pods-InCourage.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S2V96BB45E;
-				INFOPLIST_FILE = "$(SRCROOT)/InCourageUITests/Info.plist";
+				INFOPLIST_FILE = "/Users/ericandersen/Desktop/DevMountain/iOSImmersive-21/Week 10/Tuesday 10:30:18/DevMtn-PersonalCapstone-InCourage/InCourage/InCourage/Resources/en.lproj/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.EricAndersen.InCourage;
+				PRODUCT_BUNDLE_IDENTIFIER = com.EricAndersen.InCourageApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -817,17 +815,18 @@
 			baseConfigurationReference = 9F34131D4FCD79412F0E48BE /* Pods-InCourage.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S2V96BB45E;
-				INFOPLIST_FILE = "$(SRCROOT)/InCourageUITests/Info.plist";
+				INFOPLIST_FILE = "/Users/ericandersen/Desktop/DevMountain/iOSImmersive-21/Week 10/Tuesday 10:30:18/DevMtn-PersonalCapstone-InCourage/InCourage/InCourage/Resources/en.lproj/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.EricAndersen.InCourage;
+				PRODUCT_BUNDLE_IDENTIFIER = com.EricAndersen.InCourageApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -836,7 +835,6 @@
 			baseConfigurationReference = 5E9225557F41AD46165AC7B3 /* Pods-InCourageTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S2V96BB45E;
 				INFOPLIST_FILE = InCourageTests/Info.plist;
@@ -849,7 +847,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/InCourage.app/InCourage";
 			};
 			name = Debug;
 		};
@@ -858,7 +855,6 @@
 			baseConfigurationReference = A9546641131FF177CA9F847A /* Pods-InCourageTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S2V96BB45E;
 				INFOPLIST_FILE = InCourageTests/Info.plist;
@@ -871,7 +867,6 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/InCourage.app/InCourage";
 			};
 			name = Release;
 		};
@@ -890,9 +885,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.EricAndersen.InCourageUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = InCourage;
 			};
 			name = Debug;
 		};
@@ -911,9 +906,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.EricAndersen.InCourageUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = InCourage;
 			};
 			name = Release;
 		};

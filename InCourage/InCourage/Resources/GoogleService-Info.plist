@@ -2,18 +2,18 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>UIFileSharingEnabled</key>
-	<true/>
-	<key>FirebaseScreenReportingEnabled</key>
-	<false/>
+	<key>NSCameraUsageDescription</key>
+	<string>This app requires to access your photo library to show image on profile and send via chat</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app requires to access your photo library to show image on profile and send via chat</string>
 	<key>AD_UNIT_ID_FOR_BANNER_TEST</key>
 	<string>ca-app-pub-3940256099942544/2934735716</string>
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>620780526766-kcjav1rsrc8bnli4qhu4ou7b6nl6b7no.apps.googleusercontent.com</string>
+	<string>620780526766-r47fefbfosp8gutad6fft90rhd6gdpl9.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.620780526766-kcjav1rsrc8bnli4qhu4ou7b6nl6b7no</string>
+	<string>com.googleusercontent.apps.620780526766-r47fefbfosp8gutad6fft90rhd6gdpl9</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCD_SXr__BDwsyVa2aRlWoUzwBud-I1h4Y</string>
 	<key>GCM_SENDER_ID</key>
@@ -21,7 +21,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.EricAndersen.InCourage</string>
+	<string>com.EricAndersen.InCourageApp</string>
 	<key>PROJECT_ID</key>
 	<string>incourage-89367</string>
 	<key>STORAGE_BUCKET</key>
@@ -37,7 +37,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:620780526766:ios:800649806fbdc6cf</string>
+	<string>1:620780526766:ios:64481445df2bafd2</string>
 	<key>DATABASE_URL</key>
 	<string>https://incourage-89367.firebaseio.com</string>
 </dict>

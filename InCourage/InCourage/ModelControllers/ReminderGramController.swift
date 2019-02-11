@@ -28,21 +28,21 @@ class ReminderGramController {
         StorageManager.shared.uploadReminderGramImage(uid: uid, image) { (url) in
             
             guard let currentProfile = ProfileController.shared.currentProfile,
-                let url = url else { fatalError() }
+                let url = url else { return }
             let reminderGram = ReminderGram(uid: uid, image: url.absoluteString, subject: subject, message: message)
             currentProfile.reminderGramIDs.append(reminderGram.uid)
             
             Endpoint.database.collection("profiles").document(currentProfile.uid).updateData(["reminderGramIDs" : currentProfile.reminderGramIDs])
             
-            print("🏆 We have reminderGram IDs!!!!!🏅")
+//            print("🏆 We have reminderGram IDs!!!!!🏅")
             
             Endpoint.database.collection("reminderGrams").document(reminderGram.uid).setData(reminderGram.firebaseDictionary) { (error) in
                 if let error = error {
                     print("🌎 Error saving ReminderGram \(error) \(error.localizedDescription)")
                 } else {
                     NotificationCenter.default.post(name: NSNotification.Name(rawValue: "load"), object: nil)
-                    print("🎀🎀🎀 loaded")
-                    print("👍🏽 Successfully created ReminderGram!")
+//                    print("🎀🎀🎀 loaded")
+//                    print("👍🏽 Successfully created ReminderGram!")
                 }
             }
         }

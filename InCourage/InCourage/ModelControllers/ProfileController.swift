@@ -34,7 +34,7 @@ class ProfileController {
         currentProfile = profile
         currentProfileUID = uid
         
-        guard let currentProfile = self.currentProfile else { fatalError() }
+        guard let currentProfile = self.currentProfile else { return }
         saveToPersistentStorage()
         Endpoint.database.collection("profiles").document(currentProfile.uid).setData(currentProfile.firebaseDictionary)
     }
@@ -43,7 +43,7 @@ class ProfileController {
     
     // MARK: - Fetching
     func fetchCurrentProfile(completion: @escaping (Bool) -> Void) {
-        guard let currentProfileUID = currentProfileUID else { fatalError() }
+        guard let currentProfileUID = currentProfileUID else { return }
         Endpoint.database.collection("profiles").document(currentProfileUID).getDocument { (snapshot, error) in
             if let error = error {
                 print("🎩 Error fetching user \(error) \(error.localizedDescription)")
@@ -53,8 +53,8 @@ class ProfileController {
 
             if let document = snapshot {
                 guard let profileDictionary = document.data() else { return }
-                self.currentProfile = Profile(profileDictionary: profileDictionary)!
-                print("✅ Successfully Fetched logged in user! 🐩\(currentProfileUID)")
+                self.currentProfile = Profile(profileDictionary: profileDictionary)
+//                print("✅ Successfully Fetched logged in user! 🐩\(currentProfileUID)")
                 completion(true)
             }
         }

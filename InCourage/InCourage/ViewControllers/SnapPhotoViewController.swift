@@ -94,6 +94,7 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
         cameraSetup.configureCaptureInput()
         cameraSetup.configureCaptureOutput()
         cameraSetup.configurePreviewLayer(view: previewView)
+        capturedImageImageView.contentMode = .scaleAspectFill
     }
     
     
@@ -105,7 +106,7 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
 
     func fetchCurrentProfile() {
 
-        let fileURL = ProfileController.shared.fileURL()
+//        let fileURL = ProfileController.shared.fileURL()
 
         ProfileController.shared.loadFromPersistentStorage { (success) in
             if success {
@@ -115,8 +116,9 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
                         self.photoLibraryIcon.isEnabled = true
                         self.snapPhotoButton.isEnabled = true
                         self.flipCameraButton.isEnabled = true
-                        print("💰 SUCCESS ♔ We have a fetched profile!!")
-                        print("🏗\(fileURL)")
+//                        print("💰 SUCCESS ♔ We have a fetched profile!!")
+//                        print("🏗\(String(describing: ProfileController.shared.currentProfile!.uid))")
+//                        print("🏗\(ProfileController.shared.currentProfileUID!)")
                     }
                 })
 
@@ -127,8 +129,9 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
                 self.photoLibraryIcon.isEnabled = true
                 self.snapPhotoButton.isEnabled = true
                 self.flipCameraButton.isEnabled = true
-                print("🇰🇭✑ Welp we had to create a new profile, but we should be good now...")
-                print("📫\(fileURL)")
+//                print("🇰🇭✑ Welp we had to create a new profile, but we should be good now...")
+//                print("📫\(String(describing: ProfileController.shared.currentProfile!.uid))")
+//                print("📫\(ProfileController.shared.currentProfileUID!)")
             }
         }
     }
@@ -289,7 +292,7 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
         cameraSetup.captureSession.stopRunning()
 
         guard let chosenImage = info[.originalImage] as? UIImage else { return }//2
-        capturedImageImageView.contentMode = .scaleAspectFit //3
+//        capturedImageImageView.contentMode = .scaleAspectFill //3
         capturedImageImageView.image = chosenImage //4
 
         profileIcon.isHidden = true
@@ -368,10 +371,7 @@ class SnapPhotoViewController: UIViewController, AVCapturePhotoCaptureDelegate, 
                 
                 sender.setImage(#imageLiteral(resourceName: "snapPhoto-main"), for: .normal)
                 
-                guard let image = image else {
-                    print(error ?? "🛠 Image capture error: \(String(describing: error?.localizedDescription))")
-                    return
-                }
+                guard let image = image else { return }
                 
                 self.previewView.isHidden = true
                 self.profileIcon.isHidden = true
