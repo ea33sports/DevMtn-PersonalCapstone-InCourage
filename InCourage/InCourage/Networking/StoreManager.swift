@@ -227,10 +227,10 @@ class StorageManager {
         
         // Create a reference with an initial file path and name
         let reference = Storage.storage().reference(withPath: "profileImages").child("\(currentProfile.uid)").child("profilePic.png")
-        reference.getData(maxSize: (1 * 1024 * 1024)) { (data, error) in
+        reference.getData(maxSize: (1 * 1700 * 1700)) { (data, error) in
             
             if let _error = error{
-                print(_error)
+                print(error?.localizedDescription as Any)
                 failure(_error)
                 
             } else {
@@ -243,21 +243,19 @@ class StorageManager {
     }
     
     
-    func downloadReminderGramImage(folderPath: String, reminderGram: ReminderGram, success: @escaping (_ image: UIImage) -> (),failure: @escaping (_ error:Error) -> ()) {
+    func downloadReminderGramImage(folderPath: String, uid: String, success: @escaping (_ image: UIImage) -> (),failure: @escaping (_ error: Error) -> ()) {
         
         guard let currentProfile = ProfileController.shared.currentProfile else { return }
         
         // Create a reference with an initial file path and name
-        let reference = Storage.storage().reference(withPath: "reminderGramImages").child(currentProfile.uid).child("\(reminderGram.uid).png")
-        reference.getData(maxSize: (1 * 1024 * 1024)) { (data, error) in
-            
+        let reference = Storage.storage().reference(withPath: folderPath).child(currentProfile.uid).child("\(uid).png")
+        reference.getData(maxSize: (1 * 1700 * 1700)) { (data, error) in
             if let _error = error{
                 print(_error)
                 failure(_error)
-                
             } else {
                 if let _data  = data {
-                    let myImage: UIImage! = UIImage(data: _data)
+                    let myImage:UIImage! = UIImage(data: _data)
                     success(myImage)
                 }
             }

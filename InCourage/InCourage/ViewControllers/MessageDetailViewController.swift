@@ -86,7 +86,7 @@ class MessageDetailViewController: UIViewController, UITextFieldDelegate, UIText
         
         guard let reminderGram = reminderGram else { return }
         
-        StorageManager.shared.downloadReminderGramImage(folderPath: "reminderGramImages", reminderGram: reminderGram, success: { (image) in
+        StorageManager.shared.downloadReminderGramImage(folderPath: "reminderGramImages", uid: reminderGram.uid, success: { (image) in
             self.messageImage.image = image
         }) { (error) in
             print(error, error.localizedDescription)

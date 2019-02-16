@@ -71,6 +71,4 @@ struct Endpoint {
             return images.child(_reminderGramImages).child(uid)
         }
     }
-    
-    
 }

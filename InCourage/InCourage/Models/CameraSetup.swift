@@ -11,7 +11,7 @@ import AVFoundation
 import UIKit
 
 class CameraSetup: NSObject {
-    var flashMode = AVCaptureDevice.FlashMode.auto
+    var flashMode = AVCaptureDevice.FlashMode.off
     //camera session
     var captureSession = AVCaptureSession()
     //camera available in iphone
@@ -92,7 +92,22 @@ extension CameraSetup {
     func captureImage(completion: @escaping (UIImage?, Error?) -> Void) {
         
         let settings = AVCapturePhotoSettings()
-        settings.flashMode = self.flashMode
+        
+//        guard let frontCam = frontCam,
+//            let rearCam = rearCam else { return }
+//        if frontCam.hasFlash {
+//            settings.flashMode = self.flashMode
+//        } else {
+//            settings.flashMode = .off
+//        }
+//        if rearCam.hasFlash {
+//            settings.flashMode = self.flashMode
+//        } else {
+//            settings.flashMode = .off
+//        }
+        
+        settings.flashMode = .off
+        
         self.captureOutput?.capturePhoto(with: settings, delegate: self as AVCapturePhotoCaptureDelegate)
         self.photoCaptureCompletionBlock = completion
     }
@@ -133,7 +148,6 @@ extension CameraSetup: AVCapturePhotoCaptureDelegate {
             
         else if let data = photo.fileDataRepresentation(), let image = UIImage(data: data) {
             self.photoCaptureCompletionBlock?(image, nil)
-            i
         }
     }
 }

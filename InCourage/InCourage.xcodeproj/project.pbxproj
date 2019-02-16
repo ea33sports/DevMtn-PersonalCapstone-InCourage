@@ -335,6 +335,7 @@
 				383551932188FEDE007A453D /* Frameworks */,
 				383551942188FEDE007A453D /* Resources */,
 				697024CA904B214EC48E132F /* [CP] Embed Pods Frameworks */,
+				38B8F10A22177C0200450E33 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -466,6 +467,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		38B8F10A22177C0200450E33 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 1e345d971433e40ebd0ca237cb1474214faa7690 28b9cd2821d340aed18495a67cb6272a27b1609f7844a38c4b56e0f34c44205c\n\n";
+		};
 		697024CA904B214EC48E132F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -799,6 +817,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S2V96BB45E;
 				INFOPLIST_FILE = "/Users/ericandersen/Desktop/DevMountain/iOSImmersive-21/Week 10/Tuesday 10:30:18/DevMtn-PersonalCapstone-InCourage/InCourage/InCourage/Resources/en.lproj/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -819,6 +838,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = S2V96BB45E;
 				INFOPLIST_FILE = "/Users/ericandersen/Desktop/DevMountain/iOSImmersive-21/Week 10/Tuesday 10:30:18/DevMtn-PersonalCapstone-InCourage/InCourage/InCourage/Resources/en.lproj/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

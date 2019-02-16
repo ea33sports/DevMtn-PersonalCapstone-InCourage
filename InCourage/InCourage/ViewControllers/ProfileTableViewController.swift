@@ -128,12 +128,6 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     }
     
     
-    func clearView() {
-        profileImageView.image = #imageLiteral(resourceName: "profileIcon")
-        whatIsLifeTextView.text = ""
-        tableView.reloadData()
-    }
-    
     @objc func updateReminderGrams() {
         
         UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
@@ -197,23 +191,25 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        dismiss(animated: true, completion: nil)
-        guard let chosenImage = info[.originalImage] as? UIImage else { return }//2
         
+        guard let chosenImage = info[.originalImage] as? UIImage else { return }//2
         guard let currentProfile = ProfileController.shared.currentProfile else { return }
+        
         StorageManager.shared.uploadProfileImage(chosenImage) { (url) in
-            if let url = url {
-                currentProfile.profilePic = url.absoluteString
-                Endpoint.database.collection("profiles").document(currentProfile.uid).updateData(["profilePic" : url.absoluteString], completion: { (errer) in
-                    
-                    if let error = errer {
-                        print(error)
-                    }
-                    
-                    self.profileImageView.image = chosenImage //4
+            
+            guard let url = url else { return }
+            currentProfile.profilePic = url.absoluteString
+            
+            Endpoint.database.collection("profiles").document(currentProfile.uid).updateData(["profilePic" : url.absoluteString], completion: { (errer) in
+                
+                if let error = errer {
+                    print(error)
+                }
+                
+                self.profileImageView.image = chosenImage //4
+                self.dismiss(animated: true, completion: nil)
 //                    print("⚡︎ We have Image \(currentProfile.profilePic)")
-                })
-            }
+            })
         }
     }
     
@@ -271,7 +267,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
         hideTableViewView.updateConstraints()
         hideTableViewView.layoutIfNeeded()
     }
-
+    
     
     
     // MARK: - Actions
