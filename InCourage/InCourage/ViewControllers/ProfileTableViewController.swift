@@ -244,7 +244,7 @@ class ProfileTableViewController: UITableViewController, UINavigationControllerD
     }
     
     
-    @objc func dismissKeyboard(){
+    @objc func dismissKeyboard() {
         saveChanges()
         whatIsLifeTextView.endEditing(true)
         tableView.isUserInteractionEnabled = true

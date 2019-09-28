@@ -243,7 +243,7 @@ class StorageManager {
     }
     
     
-    func downloadReminderGramImage(folderPath: String, uid: String, success: @escaping (_ image: UIImage) -> (),failure: @escaping (_ error: Error) -> ()) {
+    func downloadReminderGramImage(folderPath: String, uid: String, success: @escaping (_ image: UIImage) -> (), failure: @escaping (_ error: Error) -> ()) {
         
         guard let currentProfile = ProfileController.shared.currentProfile else { return }
         
